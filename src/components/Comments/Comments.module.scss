@@ -1,0 +1,247 @@
+@keyframes fadeIn {
+    0% {
+        width: 0;
+        opacity: 0;
+    }
+    100% {
+        width: 100%;
+        opacity: 1;
+    }
+}
+
+.wrapper {
+    max-width: 700px;
+    width: 100%;
+    max-height: 100vh;
+    height: 100%;
+    background-color: var(--white);
+    padding: 24px;
+    animation: fadeIn 0.3s ease;
+    position: absolute;
+    top: 0;
+    right: 0;
+    overflow: auto;
+    --margin-left: 44px;
+}
+
+.body {
+    margin-top: 50px;
+    padding-right: 50px;
+    min-width: 100%;
+}
+
+.write,
+.reply-box {
+    margin-top: 24px;
+    max-width: 100%;
+    display: flex;
+    align-items: flex-start;
+}
+
+.reply-box {
+    margin-left: var(--margin-left);
+    min-width: 300px;
+    margin-top: 8px;
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 12px;
+}
+
+.comment-placeholder {
+    flex: 1;
+    border-bottom: 1px solid var(--border-color);
+    color: #29292988;
+    font-size: 1.3rem;
+    padding: 4px;
+    // display: flex;
+    // align-items: center;
+}
+
+.comments {
+    width: 100%;
+    margin: 32px 16px 12px 0px;
+}
+
+// comment
+
+.comment-wrapper {
+    // margin-bottom: 12px;
+    margin-top: 12px;
+}
+
+.comment-per-user {
+    display: flex;
+    min-width: 350px;
+}
+
+.comment-box {
+    background-color: var(--border-color);
+    padding: 8px 12px;
+    // flex: 1;
+    display: inline-block;
+    border-radius: 8px;
+    min-width: 300px;
+}
+
+.name {
+    font-weight: bold;
+}
+
+.comment-content {
+    padding: 4px 0 8px 0;
+    font-size: 1.3rem;
+}
+
+.comment-tools {
+    color: var(--primary-color);
+    margin-left: 50px;
+    margin-top: 4px;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    min-width: 350px;
+
+    .dot {
+        cursor: pointer;
+        margin: 0 4px;
+        margin-top: 4px;
+        color: var(--text-color);
+        text-align: center;
+    }
+
+    .comment-tool {
+        cursor: pointer;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+// Commemnt Input
+
+.comment-input {
+    flex: 1;
+}
+
+.text-input {
+    width: 100%;
+    height: 232px;
+    padding: 12px;
+    font-size: 1.4rem;
+    letter-spacing: 0.5;
+    line-height: 1.2;
+    resize: none;
+    outline: none;
+    border: 1.5px solid var(--border-color);
+    border-radius: 4px;
+
+    &:focus {
+        border: 1.5px solid var(--text-color);
+    }
+}
+
+.btn-box {
+    margin-top: 12px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.close {
+    // background-color: red;
+    position: fixed;
+    top: 12px;
+    right: 0px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    &:hover {
+        .close-icon {
+            color: #292929;
+        }
+    }
+}
+
+.close-icon {
+    font-size: 2.4rem;
+    color: #29292977;
+}
+
+.see-more,
+.see-less {
+    font-size: 1.4rem;
+    display: flex;
+    font-weight: 600;
+    align-items: center;
+    margin-left: var(--margin-left);
+    margin-bottom: 8px;
+    min-width: 350px;
+
+    .icon {
+        margin: 0 4px;
+    }
+}
+
+.see-more:hover {
+    .icon {
+        transform: translateY(10%);
+    }
+}
+
+.see-less:hover {
+    .icon {
+        transform: translateY(-10%);
+    }
+}
+
+.reply {
+    margin-top: 0;
+    margin-left: var(--margin-left);
+    padding: 4px 0px 4px 12px;
+    position: relative;
+
+    &::before {
+        content: '';
+        width: 1px;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        // bottom: 8px;
+        background-color: var(--primary-color);
+    }
+
+    .avatar {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+@media (max-width: 768px) {
+    .wrapper {
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 80vh;
+        border-radius: 16px;
+        padding: 12px;
+
+        .close {
+            position: fixed;
+            top: 12px;
+            right: 12px;
+        }
+    }
+
+    .body {
+        margin-top: 12px;
+    }
+}

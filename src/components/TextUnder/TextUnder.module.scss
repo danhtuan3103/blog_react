@@ -1,0 +1,15 @@
+.wrapper {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    width: auto;
+    font-size: 3rem;
+}
+.underline {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    right: 0;
+    bottom: -25%;
+    z-index: -1;
+}
