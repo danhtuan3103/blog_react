@@ -16,7 +16,8 @@ function Avatar() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(() => {
-        axios(`${process.env.REACT_API_URL}/images/avatar/avatars.json`)
+        console.log(process.env.REACT_APP_API_URL);
+        axios(`${process.env.REACT_APP_CLIENT_URL}/images/avatar/avatars.json`)
             .then((res) => {
                 const data = res.data;
                 console.log(data);
