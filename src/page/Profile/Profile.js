@@ -45,7 +45,7 @@ function Profile() {
             .catch((err) => {
                 console.log(err);
             });
-    }, []);
+    }, [id]);
     let blogs = user?.blogs || [];
 
     const handleClickUser = (id) => {
