@@ -18,7 +18,7 @@ function FeedbackList() {
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <div className={cx('feedbacks')}>
-                    {feedbacks.map((feed, index) => {
+                    {feedbacks?.map((feed, index) => {
                         return (
                             <div className={cx('feedback')} key={index}>
                                 <p className={cx('content')}>{feed.feedback}</p>

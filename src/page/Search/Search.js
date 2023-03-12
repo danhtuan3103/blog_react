@@ -67,7 +67,7 @@ function SearchPage() {
             </div>
 
             <div className={cx('list')}>
-                {cards.map((card, index) => {
+                {cards?.map((card, index) => {
                     return <Card key={index} className={cx('card')} blog={card}></Card>;
                 })}
             </div>
