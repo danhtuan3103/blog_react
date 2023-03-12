@@ -177,7 +177,7 @@ function Blog() {
                     </div>
                     <div className={cx('comment')} onClick={handleCommentButton}>
                         <GoCommentDiscussion className={cx('statistical-icon')} />
-                        <span>{blog?.comment?.count || 0}</span>
+                        <span>{comments}</span>
                     </div>
                 </div>
                 <div className={cx('topics')}>

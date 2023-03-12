@@ -80,7 +80,7 @@ function Comment({ setCountComments, setComments, comment, getComment, reply, cl
             <div className={cx('comment-per-user')}>
                 <Image
                     className={cx('avatar')}
-                    src={comment?.author.avatar}
+                    src={comment?.author?.avatar}
                     fallBack={images.fallbackAvatar}
                     onClick={() => handleClickUser(comment?.author?._id)}
                 />
@@ -88,7 +88,7 @@ function Comment({ setCountComments, setComments, comment, getComment, reply, cl
                     <span className={cx('name')} onClick={() => handleClickUser(comment?.author?._id)}>
                         {comment?.author?.username}
                     </span>
-                    <p className={cx('comment-content')}>{comment.content}</p>
+                    <p className={cx('comment-content')}>{comment?.content}</p>
                 </div>
             </div>
             <div className={cx('comment-tools')}>
@@ -104,7 +104,7 @@ function Comment({ setCountComments, setComments, comment, getComment, reply, cl
                 <span className={cx('dot')}>
                     <BsDot />
                 </span>
-                <span className={cx('comment-tool')}>{timeCaculate(comment.createdAt)}</span>
+                <span className={cx('comment-tool')}>{timeCaculate(comment?.createdAt)}</span>
             </div>
 
             {openInput && (

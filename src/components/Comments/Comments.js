@@ -42,6 +42,7 @@ function Comments({ setCountComments, onClose, blogId, author }) {
         fetchAPI();
     }, [blogId]);
 
+    console.log(comments);
     const addRootComment = useCallback((content) => {
         const data = {
             content,
