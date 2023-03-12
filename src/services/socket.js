@@ -21,7 +21,7 @@ export const pingSocket = () => {
 export const listenSocket = (dispatch) => {
     if (socket)
         socket.on('emit_notis', (data) => {
-            console.log(data.data);
+            // console.log(data.data);
             dispatch(addNotifications(data.data));
         });
 };
@@ -29,3 +29,5 @@ export const listenSocket = (dispatch) => {
 export const sendNotification = ({ user_id, notification }) => {
     if (socket) socket.emit('send_noti', { user_id: user_id, notification: notification });
 };
+
+export default socket;

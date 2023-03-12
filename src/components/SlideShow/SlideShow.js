@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import Button from '../Button';
 import { SVGteamsit, SpeedTest, Innivation, ShareLink, NewPaper } from '~/assets/images';
+import { useNavigate } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 const slide = [
@@ -44,6 +45,7 @@ function SlideShow() {
     const preSlide = currentSlide === 0 ? slide.length - 1 : currentSlide - 1;
     const nextSlide = currentSlide === slide.length - 1 ? 0 : currentSlide + 1;
 
+    const navigate = useNavigate();
     const handleSlide = (index) => {
         const slides = document.querySelectorAll('[data-index]');
         let translateAmount = index * 100;
@@ -93,15 +95,14 @@ function SlideShow() {
                             style={{
                                 background: sl.bc,
                             }}
-                            ng
                             data-index={index}
                         >
                             <div className={cx('intro')}>
                                 <Comp className={cx('img')} />
                                 <h3 className={cx('text')}>{sl.text}</h3>
 
-                                <Button primary className={cx('center-btn')}>
-                                    Tìm hiểu thêm
+                                <Button primary className={cx('center-btn')} onClick={() => navigate('/search')}>
+                                    Tìm kiếm
                                 </Button>
                             </div>
                         </div>

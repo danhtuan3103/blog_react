@@ -2,19 +2,19 @@ import styles from './Search.module.scss';
 import classNames from 'classnames/bind';
 import Card from '~/components/Card';
 import Search from '~/components/Search';
-import { useEffect, useState } from 'react';
-import instance from '~/config/axiosConfig';
-import axiosConfig from '~/config/axiosConfig';
-import { useSearchParams } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import * as blogService from '~/services/blogService';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import useTitle from '~/hooks/useTitle';
 import Pagination from '~/components/Pagination';
+import TopicItem from './TopicItem';
 const cx = classNames.bind(styles);
 
 function SearchPage() {
     const [cards, setCards] = useState([]);
     const [searchParams, setSearchParams] = useSearchParams();
     const [page, setPage] = useState(searchParams.get('page') || 1);
+    const location = useLocation().pathname;
     useTitle('Search');
 
     const [topic, setTopic] = useState(searchParams.get('topic') || 'All');
@@ -22,16 +22,22 @@ function SearchPage() {
 
     useEffect(() => {
         setSearchParams({ topic, page });
-        instance.get(`/blog/?topic=${topic}&page=${page}&limit=${5}`).then((res) => {
-            setCards(res.data.data);
-        });
-    }, [page, topic]);
+        const fetchApi = async () => {
+            const result = await blogService.getBlogs({ topic, page });
+            setCards(result);
+        };
 
-    const handleClickTopic = (topic) => {
-        setTopic(topic);
-        setPage(1);
-        setSearchParams({ topic, page });
-    };
+        fetchApi();
+    }, [page, topic, searchParams, location]);
+
+    const handleClickTopic = useCallback(
+        (topic) => {
+            setTopic(topic);
+            setPage(1);
+            setSearchParams({ topic, page });
+        },
+        [topic],
+    );
 
     return (
         <div className={cx('wrapper')}>
@@ -49,13 +55,12 @@ function SearchPage() {
                 <div className={cx('topic-list')}>
                     {['All', 'React', 'NodeJs', 'MongoDB', 'NetWork', 'Javascript', 'C'].map((key, index) => {
                         return (
-                            <p
-                                className={cx('topic', { active: topic === key })}
+                            <TopicItem
                                 key={index}
-                                onClick={() => handleClickTopic(key)}
-                            >
-                                {key}
-                            </p>
+                                className={cx({ active: topic === key })}
+                                topic={key}
+                                onClickTopic={handleClickTopic}
+                            />
                         );
                     })}
                 </div>

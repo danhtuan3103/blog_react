@@ -8,15 +8,25 @@ import Image from '~/components/Image';
 import Overlay from '~/components/Overlay/Overlay';
 import MenuItem from '../Menu/MenuItem';
 import { RiSearch2Fill, RiLoginCircleFill } from 'react-icons/ri';
-import { useState } from 'react';
+import { IoMdNotifications } from 'react-icons/io';
+import Notification from '../Notification';
+
+import { useEffect, useMemo, useRef, useState } from 'react';
 import SubHeader from '../Menu/SubHeader';
 const cx = classNames.bind(styles);
 
-function BottomHead({ menu }) {
+function BottomHead({ menu, nonReaded }) {
     const [history, setHistory] = useState([{ data: menu }]);
     const currentItems = history[history.length - 1];
     const { isAuthenticated, user } = useSelector((state) => state);
     const [openMenu, setOpenMenu] = useState(false);
+    const [visibleNoti, setVisibleNoti] = useState(false);
+    const ref = useRef();
+
+    useEffect(() => {
+        setHistory([{ data: menu }]);
+    }, [menu]);
+
     const renderItems = () => {
         return currentItems.data.map((item, index) => {
             const isParent = !!item.children;
@@ -59,12 +69,23 @@ function BottomHead({ menu }) {
                 <a className={cx('icon-block')} onClick={() => setOpenMenu(true)}>
                     <Image
                         className={cx('bottomSide-avatar')}
-                        src={user.avatar}
-                        alt={user.username}
+                        src={user?.avatar}
+                        alt={user?.username}
                         fallBack={images.fallbackAvatar}
                     />
                 </a>
             )}
+            <Notification visible={visibleNoti} setVisible={setVisibleNoti}>
+                <span
+                    className={cx('noti-icon', 'icon-block')}
+                    onClick={() => setVisibleNoti(true)}
+                    ref={ref}
+                    data-noti={nonReaded?.length || 0}
+                    data-active={nonReaded?.length > 0}
+                >
+                    <IoMdNotifications className={cx('icon')} />
+                </span>
+            </Notification>
 
             <NavLink
                 to="/blog/write"
@@ -93,8 +114,8 @@ function BottomHead({ menu }) {
                                 fallBack={images.fallbackAvatar}
                             />
                             <div className={cx('name-box')}>
-                                <span className={cx('name')}>Nguyen Danh Tuan</span>
-                                <span className={cx('aka')}>@danhtuan</span>
+                                <span className={cx('name')}>{user?.username}</span>
+                                <span className={cx('aka')}>{user?.email}</span>
                             </div>
                         </header>
 

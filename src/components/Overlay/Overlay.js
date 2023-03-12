@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import styles from './Overlay.module.scss';
 
 function Overlay({ onClose, children }) {
@@ -8,4 +9,4 @@ function Overlay({ onClose, children }) {
     );
 }
 
-export default Overlay;
+export default memo(Overlay);

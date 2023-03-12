@@ -11,6 +11,9 @@ const routes = {
     profile: '/profile/:id',
     store: '/store/:type',
     avatar_selector: '/avatar/select',
+    feedback: '/feedback',
+    list_feedback: '/feedback/list',
+    error: '/*',
 };
 
 export default routes;

@@ -3,57 +3,58 @@ import style from './Comments.module.scss';
 import { MdClose } from 'react-icons/md';
 import Image from '~/components/Image';
 import images from '~/assets/images';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, memo, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import Button from '~/components/Button';
 import Comment from './Comment';
 import CommentInput from './CommentInput';
-import instance from '~/config/axiosConfig';
 import { sendNotification } from '~/services/socket';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { commentService } from '~/services';
+import { sortByDate, handleAuth } from '~/helper';
+
 const cx = classNames.bind(style);
 
 function Comments({ setCountComments, onClose, blogId, author }) {
     const [comment, setComment] = useState(false);
     const [comments, setComments] = useState([]);
+    const { user, isAuthenticated } = useSelector((state) => state);
+    const href = useLocation().pathname;
+    const navigate = useNavigate();
+    const rootComment = useMemo(() => sortByDate(comments.filter((comment) => comment.isRoot === true)), [comments]);
 
-    const { user } = useSelector((state) => state);
-
-    const rootComment = useMemo(() => comments.filter((comment) => comment.isRoot === true), [comments]);
-
-    const getChildrenComment = (parrentId) => {
+    const getChildrenComment = useCallback((parrentId) => {
         const childComments = comments.filter((comm) => {
             return comm.parrent === parrentId;
         });
 
         return childComments;
-    };
+    });
 
-    useEffect(() => {
-        instance
-            .get(`/blog/comment/${blogId}`)
-            .then((res) => {
-                const data = res.data.comments;
-                setComments(data);
-            })
-            .then((err) => {
-                console.log(err);
-            });
+    const handleClickUser = useCallback((id) => {
+        navigate(`/profile/${id}`);
     }, []);
 
-    const addRootComment = (content) => {
+    useEffect(() => {
+        const fetchAPI = async () => {
+            const result = await commentService.getCommentOfBlog({ blog_id: blogId });
+            setComments(result);
+        };
+        fetchAPI();
+    }, [blogId]);
+
+    const addRootComment = useCallback((content) => {
         const data = {
             content,
             isRoot: true,
             parrent: null,
         };
 
-        instance
-            .post(`/blog/comment/${blogId}`, data)
-            .then((res) => {
-                const data = res.data?.data || [];
-                setComments(data);
-                setCountComments((pre) => pre + 1);
-                setComment(false);
+        const fetchAPI = async () => {
+            const result = await commentService.addComment({ blog_id: blogId, comment: data });
+            setComments(result);
+            setCountComments((pre) => pre + 1);
+            setComment(false);
+            if (user._id !== author) {
                 sendNotification({
                     notification: {
                         type: 'COMMENT',
@@ -63,11 +64,11 @@ function Comments({ setCountComments, onClose, blogId, author }) {
                         message: content,
                     },
                 });
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
+            }
+        };
+
+        handleAuth({ isAuthenticated, authHandle: fetchAPI, path: href });
+    }, []);
 
     return (
         <div className={cx('wrapper')} onClick={(e) => e.stopPropagation()}>
@@ -79,7 +80,12 @@ function Comments({ setCountComments, onClose, blogId, author }) {
                 <h2 className={cx('title')}>Comment</h2>
 
                 <div className={cx('write')}>
-                    <Image className={cx('avatar')} fallBack={images.fallbackAvatar} />
+                    <Image
+                        className={cx('avatar')}
+                        src={user?.avatar}
+                        fallBack={images.fallbackAvatar}
+                        onClick={() => handleClickUser(user._id)}
+                    />
                     {comment ? (
                         <CommentInput setComment={setComment} onSubmit={addRootComment} />
                     ) : (
@@ -108,4 +114,4 @@ function Comments({ setCountComments, onClose, blogId, author }) {
     );
 }
 
-export default Comments;
+export default memo(Comments);

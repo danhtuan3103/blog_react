@@ -63,6 +63,7 @@ instance.interceptors.response.use(
     },
     async (err) => {
         // window.location.href = '/login';
+
         return Promise.reject(err);
     },
 );

@@ -10,7 +10,7 @@ const getTypeNotifiication = (type) => {
             return 'bình luận';
             break;
         case 'REPLY':
-            return 'trả lời bình luận';
+            return 'trả lời bình luận của bạn trong';
             break;
         case 'LIKE_COMMENT':
             return 'thích bình luận';

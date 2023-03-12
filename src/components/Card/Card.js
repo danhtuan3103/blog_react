@@ -1,104 +1,115 @@
-import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect, memo, useCallback } from 'react';
 import styles from './Card.module.scss';
 import classNames from 'classnames/bind';
-import images from '~/assets/images';
 import { FaCommentAlt } from 'react-icons/fa';
-
-import Image from '~/components/Image';
 import { AiFillLike, AiFillEye } from 'react-icons/ai';
-
 import CardHeader from './CardHeader';
-import instance from '~/config/axiosConfig';
 import { sendNotification } from '~/services/socket';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { addToast } from '~/auth/redux/actions';
+import { bookmarkService } from '~/services';
+import { handleAuth } from '~/helper';
+
+import Image from '~/components/Image';
+
 const cx = classNames.bind(styles);
 
 function Card({ className, blog }) {
     const classes = cx('wrapper', { [className]: className });
     const [isBookmarked, setIsBookmarked] = useState(false);
-    const { user } = useSelector((state) => state);
+    const { user, isAuthenticated } = useSelector((state) => state);
+    const href = useLocation().pathname;
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        instance
-            .get(`/bookmark/check/${blog._id}`)
-            .then((res) => {
-                const data = res.data.data;
-                if (data) {
-                    setIsBookmarked(data.isBookmarked);
-                } else {
-                    alert('Sorry , somthing was wrong');
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        const fetchAPI = async () => {
+            const result = await bookmarkService.checkBookmark({ blog_id: blog._id });
+            setIsBookmarked(result?.isBookmarked);
+        };
+
+        handleAuth({ isAuthenticated, authHandle: fetchAPI });
     }, []);
 
-    const handleClick = (e) => {
-        navigate(`/blog/${blog._id}`, {});
-    };
+    const handleClick = useCallback(
+        (e) => {
+            navigate(`/blog/${blog._id}`, {});
+        },
+        [blog?._id],
+    );
 
-    const handleClickBookmark = (e) => {
-        e.stopPropagation();
-        instance
-            .post(`/bookmark/${blog._id}`)
-            .then((res) => {
-                const data = res.data.data;
-                if (data) {
-                    setIsBookmarked(data.isBookmarked);
+    const handleClickShare = useCallback(
+        (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        },
+        [blog?._id],
+    );
+
+    const handleClickUser = useCallback(
+        (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            navigate(`/profile/${blog?.author?._id}`, { replace: true });
+        },
+        [blog?._id],
+    );
+
+    const handleClickBookmark = useCallback(
+        (e) => {
+            e.stopPropagation();
+            const fetchAPI = async () => {
+                const result = await bookmarkService.bookmarkBlog({ blog_id: blog?._id });
+                setIsBookmarked(result.isBookmarked);
+                if (isBookmarked) {
+                    dispatch(addToast({ type: 'toast-info', mess: 'Xóa vào mục đã lưu' }));
+                } else {
+                    dispatch(addToast({ type: 'toast-info', mess: 'Thêm vào mục đã lưu' }));
+                }
+                if (user?._id !== blog?.author?._id) {
                     sendNotification({
                         notification: {
                             type: isBookmarked ? 'UN_STORE' : 'STORE',
-                            receiver: blog.author._id,
-                            sender: user._id,
-                            target: blog._id,
+                            receiver: blog?.author._id,
+                            sender: user?._id,
+                            target: blog?._id,
                         },
                     });
-                } else {
-                    alert('Sorry , somthing was wrong');
                 }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
+            };
 
-    const handleClickShare = (e) => {
-        e.stopPropagation();
-    };
-
-    const handleClickUser = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        navigate(`/profile/${blog.author._id}`, { replace: true });
-    };
+            handleAuth({ isAuthenticated, authHandle: fetchAPI, path: href });
+        },
+        [isBookmarked, blog?._id],
+    );
 
     return (
         <div className={classes} onClick={handleClick}>
             <CardHeader
                 isBookmarked={isBookmarked}
-                avatar={blog.author?.avatar}
-                author={blog.author?.username}
+                avatar={blog?.author?.avatar}
+                author={blog?.author?.username}
+                blogId={blog._id}
                 onClickUser={handleClickUser}
                 onClickBookMark={handleClickBookmark}
                 onClickShare={handleClickShare}
             />
             <div className={cx('body')}>
                 <div className={cx('info')}>
-                    <h2 className={cx('title')}>{blog.title}</h2>
-                    <p className={cx('description')}>{blog.content}</p>
+                    <h2 className={cx('title')}>{blog?.title}</h2>
+                    <p className={cx('description')}>{blog?.content}</p>
 
                     <div className={cx('statistical')}>
                         <span className={cx('number')}>
                             <AiFillLike className={cx('icon')} />
-                            {blog.like.count}
+                            {blog?.like?.count}
                         </span>
                         <span className={cx('number')}>
                             <FaCommentAlt className={cx('icon')} />
-                            {blog.comment.count}
+                            {blog?.comment?.count}
                         </span>
                     </div>
                 </div>
@@ -108,4 +119,4 @@ function Card({ className, blog }) {
     );
 }
 
-export default Card;
+export default memo(Card);

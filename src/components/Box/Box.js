@@ -1,4 +1,5 @@
 import classNames from 'classnames/bind';
+import { memo } from 'react';
 import styles from './Box.module.scss';
 
 const cx = classNames.bind(styles);
@@ -14,4 +15,4 @@ function Box({ title, children, className }) {
     );
 }
 
-export default Box;
+export default memo(Box);

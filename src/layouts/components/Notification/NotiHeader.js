@@ -1,6 +1,7 @@
 import classNames from 'classnames/bind';
 import styles from './Notification.module.scss';
 import Button from '~/components/Button';
+import { memo } from 'react';
 const cx = classNames.bind(styles);
 
 function NotiHeader({ onClick }) {
@@ -14,4 +15,4 @@ function NotiHeader({ onClick }) {
     );
 }
 
-export default NotiHeader;
+export default memo(NotiHeader);

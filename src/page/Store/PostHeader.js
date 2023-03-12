@@ -1,4 +1,5 @@
 import classNames from 'classnames/bind';
+import { memo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from './Store.module.scss';
 
@@ -25,4 +26,4 @@ function PostHeader({ types = [] }) {
     );
 }
 
-export default PostHeader;
+export default memo(PostHeader);

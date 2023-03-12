@@ -1,16 +1,15 @@
 import classNames from 'classnames/bind';
 import styles from './Notification.module.scss';
-import Button from '~/components/Button';
 import Image from '~/components/Image';
 import images from '~/assets/images';
 import { useNavigate } from 'react-router-dom';
 import instance from '~/config/axiosConfig';
 import { useDispatch } from 'react-redux';
 import { getNotifications } from '~/auth/redux/actions';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 const cx = classNames.bind(styles);
 
-function NotiItem({ title, date, sender, type, blog, message, className, itemId, readed }) {
+function NotiItem({ title, date, sender, type, blog, message, className, itemId, readed, onClose }) {
     const navigate = useNavigate();
     const [isReaded, setIsReaded] = useState(readed);
     const dispatch = useDispatch();
@@ -31,6 +30,7 @@ function NotiItem({ title, date, sender, type, blog, message, className, itemId,
     };
     const handleClickUser = (id) => {
         navigate(`/profile/${id}`);
+        onClose();
         if (!isReaded) {
             handleReaded();
         }
@@ -38,6 +38,7 @@ function NotiItem({ title, date, sender, type, blog, message, className, itemId,
 
     const handleClickBlog = (id) => {
         navigate(`/blog/${id}`);
+        onClose();
         if (!isReaded) {
             handleReaded();
         }
@@ -71,4 +72,4 @@ function NotiItem({ title, date, sender, type, blog, message, className, itemId,
     );
 }
 
-export default NotiItem;
+export default memo(NotiItem);

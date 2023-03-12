@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import Button from '~/components/Button';
 import styles from './Write.module.scss';
-import Confetti from '~/components/Confetti';
+import { memo } from 'react';
 
 const cx = classNames.bind(styles);
 function Export({ topic, onTopic, thumbnail, onThumbnail, onSubmit }) {
@@ -49,4 +49,4 @@ function Export({ topic, onTopic, thumbnail, onThumbnail, onSubmit }) {
     );
 }
 
-export default Export;
+export default memo(Export);

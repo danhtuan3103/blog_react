@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { useAutoResize } from '~/hooks';
 import classNames from 'classnames/bind';
 import styles from './ExForm.module.scss';
@@ -44,4 +44,4 @@ function ExFrom({ id, value1, value2, handleOnChange, onDelete }) {
     );
 }
 
-export default ExFrom;
+export default memo(ExFrom);

@@ -5,6 +5,7 @@
     width: 100%;
     flex-direction: column;
     margin-bottom: 50px;
+    color: var(--text-color);
 }
 
 .info {
@@ -38,7 +39,7 @@
 .comment {
     display: flex;
     align-items: center;
-    color: #29292999;
+    color: var(--two-night-color);
     margin-right: 24px;
     margin-left: 8px;
 
@@ -94,7 +95,7 @@
 .preview {
     height: 100%;
     background-color: var(--background-color);
-    color: #333;
+    color: var(--text-color);
     margin-bottom: 48px;
 
     blockquote {
@@ -121,7 +122,7 @@
         border-radius: 4px;
         margin: 0 8px;
         font-size: 1.3rem;
-        color: #29292999;
+        color: var(--two-night-color);
         background-color: var(--border-color);
         cursor: pointer;
         &:hover {

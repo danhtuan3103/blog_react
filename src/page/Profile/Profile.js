@@ -5,12 +5,12 @@ import images from '~/assets/images';
 import Box from '~/components/Box';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import instance from '~/config/axiosConfig';
 import Button from '~/components/Button';
 import { timeCaculate } from '~/helper';
 import useTitle from '~/hooks/useTitle';
-import { sortByDate } from '~/helper/sortByDate';
+import { sortByDate } from '~/helper';
 import getTypeNotifiication from '~/helper/getTypeNotification';
+import { authService, notificationService } from '~/services';
 
 const cx = classNames.bind(styles);
 function Profile() {
@@ -19,32 +19,16 @@ function Profile() {
     const [user, setUser] = useState({});
     const [activitys, setActivitys] = useState([]);
     useTitle(user?.username || 'Profile');
-
-    console.log(activitys);
     const navigate = useNavigate();
-    useEffect(() => {
-        instance
-            .get(`/user/${id}`)
-            .then((res) => {
-                if (res.data.status === 'success') {
-                    setUser(res.data.data);
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }, [id]);
 
     useEffect(() => {
-        instance
-            .get(`/notifications/${id}`)
-            .then((res) => {
-                const data = res.data.data;
-                setActivitys(sortByDate(data));
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        const fetchAPI = async () => {
+            const _result = await authService.getInfo({ id });
+            setUser(_result);
+            const result = await notificationService.getActivitys({ id });
+            setActivitys(sortByDate(result));
+        };
+        fetchAPI();
     }, [id]);
     let blogs = user?.blogs || [];
 
@@ -76,8 +60,8 @@ function Profile() {
                     </Box>
 
                     <Box title="Hoạt động gần đây" className={cx('box')}>
-                        {activitys.length > 0 ? (
-                            activitys.map((ac, index) => {
+                        {activitys?.length > 0 ? (
+                            activitys?.map((ac, index) => {
                                 return (
                                     <div className={cx('item')} key={index}>
                                         <Image
@@ -118,8 +102,8 @@ function Profile() {
 
                 <div className={cx('right-side')}>
                     <Box title="Bài viết của bạn" className={cx('box')}>
-                        {blogs.length > 0 ? (
-                            blogs.map((blog, index) => {
+                        {blogs?.length > 0 ? (
+                            blogs?.map((blog, index) => {
                                 return (
                                     <div
                                         className={cx('item2')}

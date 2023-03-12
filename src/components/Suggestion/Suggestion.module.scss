@@ -15,16 +15,17 @@
     overflow-x: auto;
 }
 .suggest-item {
+    margin-right: 4px;
     width: 120px;
     min-height: 150px;
     padding: 8px;
+    padding-bottom: 16px;
     border-radius: 8px;
     position: relative;
     border: 1px solid transparent;
     cursor: pointer;
     // background-color: var(--border-color);
     transition: background-color 0.05s linear;
-    margin-right: 4px;
 
     &::after {
         content: '';
@@ -56,7 +57,7 @@
 
 .suggest-book {
     width: 100%;
-    height: 106px;
+    height: 122px;
     border-radius: 4px;
 }
 

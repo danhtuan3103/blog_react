@@ -1,10 +1,11 @@
 import styles from './Card.module.scss';
 import classNames from 'classnames/bind';
 import Button from '../Button';
+import { memo } from 'react';
 
 const cx = classNames.bind(styles);
 const defaultFn = () => {};
-function ShareBox({ menu }) {
+function ShareBox({ menu, onClose }) {
     const renderItem = () => {
         return menu.map((link, index) => {
             const Icon = link.icon;
@@ -16,7 +17,13 @@ function ShareBox({ menu }) {
                     leftIcon={<Icon />}
                     target="_blank"
                     className={cx('share-btn')}
-                    onClick={() => fn(window.location.href) || defaultFn}
+                    onClick={() => {
+                        onClose();
+
+                        if (fn) {
+                            fn();
+                        }
+                    }}
                 >
                     {link.title}
                 </Button>
@@ -27,4 +34,4 @@ function ShareBox({ menu }) {
     return <div className={cx('dropbox')}>{renderItem()}</div>;
 }
 
-export default ShareBox;
+export default memo(ShareBox);

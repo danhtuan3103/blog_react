@@ -1,16 +1,17 @@
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
-import styles from './Search.module.scss';
-import classNames from 'classnames/bind';
-import { FiSearch } from 'react-icons/fi';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { MdClose } from 'react-icons/md';
-import images from '~/assets/images';
 import { useOutsideClick, useDebounce } from '~/hooks';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import classNames from 'classnames/bind';
+import styles from './Search.module.scss';
+
+import { FiSearch } from 'react-icons/fi';
+import { MdClose } from 'react-icons/md';
 import 'tippy.js/dist/tippy.css';
-import instance from '~/config/axiosConfig';
-import Image from '../Image';
+import * as request from '~/utils/httpRequest';
+import SearchItem from './SearchItem';
 const cx = classNames.bind(styles);
+
 function Search({ value, setValue }) {
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -25,7 +26,7 @@ function Search({ value, setValue }) {
     };
 
     const boxRef = useOutsideClick(handleClickOutside);
-    // console.log(value);
+
     useEffect(() => {
         if (!debouncedValue) {
             setResults([]);
@@ -34,7 +35,7 @@ function Search({ value, setValue }) {
         setLoading(true);
 
         const fetchAPI = async () => {
-            const result = await (await instance.get(`/blog?q=${value}`)).data;
+            const result = await request.get(`/blog?q=${value}`);
             setLoading(false);
             setResults(result.data);
         };
@@ -55,7 +56,6 @@ function Search({ value, setValue }) {
 
     const handleClear = () => {
         setValue('');
-
         setResults([]);
         inputRef.current.focus();
     };
@@ -89,28 +89,16 @@ function Search({ value, setValue }) {
             {value && (
                 <div className={cx('dropbox')} ref={boxRef}>
                     <h4 className={cx('title')}>Grammar</h4>
-
                     {loading && <AiOutlineLoading3Quarters className={cx('loading')} />}
-
-                    {results.length > 0 ? (
-                        <div className={cx('results')}>
-                            {results.map((item, index) => {
-                                return (
-                                    <div className={cx('item')} key={index}>
-                                        <Image src={item?.thumbnail || ''} className={cx('img')} />
-                                        <div className={cx('info')}>
-                                            <h4 className={cx('item-title')}>{item?.title || ''}</h4>
-                                            <p className={cx('author')}>
-                                                Created by <strong>{item?.author?.username || ''}</strong>
-                                            </p>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    ) : (
-                        <p className={cx('seeall')}>Khong co ket qua</p>
-                    )}
+                    <div className={cx('results')}>
+                        {results.length > 0 ? (
+                            results.map((item, index) => {
+                                return <SearchItem item={item} key={index} />;
+                            })
+                        ) : (
+                            <p className={cx('no-data')}>Không có kết quả</p>
+                        )}
+                    </div>
                     {results.length > 0 && (
                         <p className={cx('seeall')} onClick={handleSeeAll}>
                             {' '}

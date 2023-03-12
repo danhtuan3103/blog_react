@@ -4,7 +4,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #591f0a;
+    background-color: #353941;
 }
 .container {
     width: 400px;
@@ -22,8 +22,7 @@
     justify-content: space-between;
 
     .link {
-        // color: var(--yellow);
-
+        color: black;
         font-weight: bold;
         font-size: 1.6rem;
     }
@@ -125,4 +124,10 @@
     margin-top: 8px;
     padding: 12px;
     border-radius: 9999px;
+}
+
+.error-mes {
+    color: red;
+    font-size: 1.2rem;
+    padding: 0 12px;
 }

@@ -3,6 +3,9 @@ export const LOGOUT = 'LOGOUT';
 export const ADD_NOTIFICATION = 'ADD_NOTIFICATION';
 export const GET_NOTIFICATION = 'GET_NOTIFICATION';
 export const UPDATE_AVATAR = 'UPDATE_AVATAR';
+export const ADD_TOAST = 'ADD_TOAST';
+export const DELETE_TOAST = 'DELETE_TOAST';
+export const CHANGE_THEME = 'CHANGE_THEME';
 
 export function logout() {
     localStorage.removeItem('accessToken');
@@ -44,5 +47,24 @@ export const getNotifications = (payload) => {
     return {
         type: 'GET_NOTIFICATION',
         notifications: payload,
+    };
+};
+
+export const addToast = (payload) => {
+    return {
+        type: 'ADD_TOAST',
+        toast: payload,
+    };
+};
+
+export const deleteToast = () => {
+    return {
+        type: 'DELETE_TOAST',
+    };
+};
+
+export const changeTheme = () => {
+    return {
+        type: 'CHANGE_THEME',
     };
 };

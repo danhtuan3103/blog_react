@@ -3,18 +3,22 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    color: var(--text-color);
 }
 
 /// Menu Header
 .menu-header {
     display: flex;
     align-items: center;
-    padding: 8px 12px;
+    padding: 8px 16px;
+    color: var(--text-color);
 }
 
 .avatar {
     width: 40px;
     height: 40px;
+    background-color: var(--black);
+
     object-fit: cover;
     border-radius: 50%;
     margin-right: 12px;
@@ -38,6 +42,7 @@
     display: flex;
     align-items: center;
     position: relative;
+    color: var(--text-color);
 }
 
 .back-btn {
@@ -50,6 +55,7 @@
     font-size: 1.6rem;
     cursor: pointer;
     border-radius: 50%;
+    color: var(--text-color);
 
     &:hover {
         background-color: var(--border-color);
@@ -65,20 +71,32 @@
 
 // menu-item
 
+.menu-body {
+    margin: 4px;
+    justify-content: center;
+    align-items: center;
+}
+
 .menu-item {
-    width: 100%;
+    width: 85%;
     font-size: 1.4rem;
     font-weight: normal;
     justify-content: flex-start;
-    padding: 12px;
+    align-items: center;
+    padding: 16px;
     border-radius: 0;
     cursor: pointer;
-
     opacity: 0.7;
+    color: var(--text-color);
 
     &:hover {
         opacity: 1;
     }
+}
+
+.menu-item.active {
+    color: var(--primary-color);
+    opacity: 1;
 }
 
 .separate {

@@ -1,5 +1,6 @@
 import styles from './Pagination.module.scss';
 import classNames from 'classnames/bind';
+import { memo } from 'react';
 
 const cx = classNames.bind(styles);
 const MAX_ARRAY = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -37,4 +38,4 @@ function Pagination({ value, setValue }) {
     );
 }
 
-export default Pagination;
+export default memo(Pagination);

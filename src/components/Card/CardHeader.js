@@ -11,35 +11,59 @@ import { MdEmail } from 'react-icons/md';
 import { BiLink } from 'react-icons/bi';
 import copyTextToClipboard from '~/helper/coppyClipboard';
 import images from '~/assets/images';
+import { memo, useCallback, useState } from 'react';
 const cx = classNames.bind(styles);
 
-const SHARE_MENU = [
-    {
-        title: 'Chia sẻ lên facebook',
-        icon: FaFacebook,
-        to: `https://www.facebook.com/sharer.php?u=${encodeURIComponent(
-            'https://fullstack.edu.vn/blog/on-lai-kien-thuc-javascript-phan-2.html',
-        )}`,
-    },
-    {
-        title: 'Chia sẻ lên Email',
-        icon: MdEmail,
-        to: `mailto:?body=${encodeURIComponent(
-            'https://fullstack.edu.vn/blog/on-lai-kien-thuc-javascript-phan-2.html',
-        )}`,
-    },
-    {
-        title: 'Sao chép link liên kêt',
-        icon: BiLink,
-        fn: copyTextToClipboard,
-    },
-];
-
-function CardHeader({ isBookmarked, onClickUser, onClickBookMark, onClickShare, avatar, author, className, time }) {
+function CardHeader({
+    isBookmarked,
+    onClickUser,
+    onClickBookMark,
+    onClickShare,
+    avatar,
+    author,
+    className,
+    time,
+    blogId,
+}) {
     const classes = cx('header', {
         className: [className],
         time,
     });
+    const [visible, setVisible] = useState(false);
+
+    const handleShare = (e) => {
+        onClickShare(e);
+        setVisible(true);
+    };
+
+    const handleClickCopy = () => {
+        copyTextToClipboard(`${window.location.origin}/blog/${blogId}`);
+    };
+
+    const SHARE_MENU = [
+        {
+            title: 'Chia sẻ lên facebook',
+            icon: FaFacebook,
+            to: `https://www.facebook.com/sharer.php?u=${encodeURIComponent(
+                `${window.location.origin}/blog/${blogId}`,
+            )}`,
+        },
+        {
+            title: 'Chia sẻ lên Email',
+            icon: MdEmail,
+            to: `mailto:?body=${encodeURIComponent(`${window.location.origin}/blog/${blogId}`)}`,
+        },
+        {
+            title: 'Sao chép link liên kêt',
+            icon: BiLink,
+            fn: handleClickCopy,
+        },
+    ];
+
+    const handleClose = useCallback(() => {
+        setVisible(false);
+    }, []);
+
     return (
         <div className={classes}>
             <div className={cx('user')} onClick={onClickUser}>
@@ -59,19 +83,19 @@ function CardHeader({ isBookmarked, onClickUser, onClickBookMark, onClickShare, 
                     )}
                 </span>
                 <Tippy
+                    visible={visible}
                     interactive
-                    trigger="click"
                     placement="bottom-end"
-                    hideOnClick={true}
+                    onClickOutside={() => setVisible(false)}
                     render={(atts) => (
                         <div {...atts}>
                             <Wrapper>
-                                <ShareBox menu={SHARE_MENU}></ShareBox>
+                                <ShareBox menu={SHARE_MENU} onClose={handleClose}></ShareBox>
                             </Wrapper>
                         </div>
                     )}
                 >
-                    <span className={cx('icon-wrap')} onClick={onClickShare}>
+                    <span className={cx('icon-wrap')} onClick={handleShare}>
                         <BiDotsHorizontalRounded className={cx('icon')} />
                     </span>
                 </Tippy>
@@ -80,4 +104,4 @@ function CardHeader({ isBookmarked, onClickUser, onClickBookMark, onClickShare, 
     );
 }
 
-export default CardHeader;
+export default memo(CardHeader);

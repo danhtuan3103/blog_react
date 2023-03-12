@@ -28,9 +28,8 @@
     height: 100vh;
     display: flex;
     border-radius: 16px;
-
     justify-content: center;
-
+    align-items: center;
     transition: all 1s ease-in-out;
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
@@ -48,8 +47,8 @@
     .text {
         width: 70%;
         text-align: center;
-        text-shadow: 22px 3px 12px #333;
-        color: var(--white);
+        text-shadow: 2px 3px 2px #333;
+        color: #fff;
         margin-bottom: 32px;
         font-size: 2.2rem;
     }
@@ -59,7 +58,7 @@
     width: 42px;
     height: 42px;
     padding: 12px;
-    background-color: var(--white);
+    background-color: #fff;
     position: absolute;
     border-radius: 50%;
     display: flex;
@@ -130,6 +129,10 @@
         .img {
             max-width: 268px;
             height: 268px;
+        }
+
+        .text {
+            font-size: 1.6rem;
         }
     }
 }

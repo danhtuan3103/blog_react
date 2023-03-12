@@ -1,11 +1,12 @@
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
 import Button from '~/components/Button';
-import axios from '~/config/axiosConfig';
 import { useDispatch } from 'react-redux';
 import { login } from '~/auth/redux/actions';
+import { authService } from '~/services';
+import { Validator } from '~/helper';
 
 // Import the functions you need from the SDKs you need
 const cx = classNames.bind(styles);
@@ -13,44 +14,60 @@ function Login() {
     // Get uri to redirect after login
     const [searchParams] = useSearchParams();
     const path = searchParams.get('continute');
-
+    const [error, setError] = useState(undefined);
     const [state, setState] = useState({
         email: '',
         password: '',
     });
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+
+    const validator = (state) => {
+        let error = {};
+
+        error.password = Validator.isRequire(state.password, 'Vui lòng nhập mật khẩu');
+        error.email = Validator.isRequire(state.email, 'Vui lòng nhập email');
+        if (!error.email) {
+            error.email = Validator.isEmail(state.email);
+        }
+
+        if (!error.password) {
+            error.password = Validator.minLength(state.password, 6);
+        }
+
+        if (!error.password && !error.password) {
+            return true;
+        }
+        setError(error);
+        return false;
+    };
 
     const handleChange = (e) => {
         setState({ ...state, [e.target.name]: e.target.value });
+        setError({ ...error, [e.target.name]: undefined });
     };
 
     const handleSubmit = (e) => {
-        const data = {
-            email: state.email,
-            password: state.password,
-        };
-        axios
-            .post('/user/login', data)
-            .then((response) => {
-                const status = response.data.status;
+        const isValid = validator(state);
+        if (isValid) {
+            const data = {
+                email: state.email,
+                password: state.password,
+            };
 
-                if (status && status === 'success') {
-                    dispatch(
-                        login({
-                            accessToken: response.data.token.accessToken,
-                            refreshToken: response.data.token.refreshToken,
-                            data: response.data.data,
-                        }),
-                    );
-                    path ? (window.location.href = path) : (window.location.href = '/');
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-                // alert(error.response?.data?.message);
-            });
+            const fetchAPI = async () => {
+                const result = await authService.login({ data });
+                dispatch(
+                    login({
+                        accessToken: result.accessToken,
+                        refreshToken: result.refreshToken,
+                        data: result.user,
+                    }),
+                );
+                path ? (window.location.href = path) : (window.location.href = '/');
+            };
+            fetchAPI();
+        }
     };
     return (
         <div className={cx('wrapper')}>
@@ -69,10 +86,10 @@ function Login() {
                     </p>
 
                     <div className={cx('btn-block')}>
-                        <Button outline className={cx('btn')}>
+                        <Button outline className={cx('btn')} disabled>
                             Continute with Google
                         </Button>
-                        <Button outline className={cx('btn')}>
+                        <Button outline className={cx('btn')} disabled>
                             Continute with Facebook
                         </Button>
                     </div>
@@ -92,6 +109,8 @@ function Login() {
                             value={state.username}
                             onChange={handleChange}
                         />
+                        {error?.email && <span className={cx('error-mes')}>{error.email}</span>}
+
                         <input
                             className={cx('input')}
                             type="password"
@@ -100,6 +119,7 @@ function Login() {
                             value={state.password}
                             onChange={handleChange}
                         />
+                        {error?.password && <span className={cx('error-mes')}>{error.password}</span>}
                     </div>
 
                     <Button text className={cx('forget')} to="/forget_password">

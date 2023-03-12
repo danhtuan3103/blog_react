@@ -4,26 +4,26 @@ import styles from './Notification.module.scss';
 import Wrapper from '~/components/Wrapper';
 import NotiHeader from './NotiHeader';
 import NotiItem from './NotiItem';
-import images from '~/assets/images';
-import { timeCaculate } from '~/helper';
+import { timeCaculate, sortByDate } from '~/helper';
 import { getNotifications } from '~/auth/redux/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import getTypeNotifiication from '~/helper/getTypeNotification';
 import instance from '~/config/axiosConfig';
-import { sortByDate } from '~/helper/sortByDate';
+import { memo, useCallback } from 'react';
 const cx = classNames.bind(styles);
 
-function Notification({ children }) {
+function Notification({ children, visible, setVisible }) {
     const { notifications, user } = useSelector((state) => state);
     // console.log(notifications);
 
     const dispatch = useDispatch();
-
+    const handleClose = useCallback(() => {
+        setVisible(false);
+    }, []);
     const renderItems = () => {
-        // console.log('re-render');
         const sortNoti = sortByDate(notifications);
 
-        return sortNoti.map((key, index) => {
+        return sortNoti?.map((key, index) => {
             const isReaded = key?.read_by.some((reader) => reader.readerId === user._id);
             // console.log(isReaded);
             return (
@@ -32,6 +32,7 @@ function Notification({ children }) {
                     itemId={key._id}
                     readed={isReaded}
                     sender={key.sender}
+                    onClose={handleClose}
                     type={getTypeNotifiication(key.type)}
                     blog={key.target}
                     date={timeCaculate(key?.createdAt)}
@@ -41,7 +42,7 @@ function Notification({ children }) {
         });
     };
 
-    const handleReadAll = () => {
+    const handleReadAll = useCallback(() => {
         instance
             .get('/notifications/readed')
             .then((res) => {
@@ -53,7 +54,7 @@ function Notification({ children }) {
             .catch((err) => {
                 console.log(err);
             });
-    };
+    }, []);
 
     const renderResult = (attr) => {
         return (
@@ -69,12 +70,12 @@ function Notification({ children }) {
     return (
         <div>
             <Tippy
+                visible={visible}
                 interactive={true}
+                onClickOutside={() => setVisible(false)}
                 placement="bottom-end"
                 render={renderResult}
                 delay={[0, 700]}
-                hideOnClick={true}
-                trigger={'click'}
             >
                 {children}
             </Tippy>
@@ -82,4 +83,4 @@ function Notification({ children }) {
     );
 }
 
-export default Notification;
+export default memo(Notification);

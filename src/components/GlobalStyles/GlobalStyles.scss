@@ -4,6 +4,7 @@
     --black: #000;
     --white: #fff;
     --background-color: #f6f7fb;
+    --header-color: #fff;
     --text-color: #21222d;
     --primary-color: #4255ff;
     --primary-color-low: #423ed899;
@@ -13,6 +14,34 @@
     --orange: #d65108;
     --brown: #591f0a;
     --border-color: #29292933;
+    --two-night-color: #29292999;
+    --two-night-color-hover: #29292922;
+    --two-night-color-active: #29292944;
+
+    // Default layout
+    --default-layout-header-height: 63px;
+    --default-layout-width: 1024px;
+    --font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+}
+
+[data-theme='dark'] {
+    --black: #fff;
+    --white: #292929;
+    --header-color: #26282b;
+    --background-color: #353941;
+    --text-color: #fff;
+    --primary-color: #4255ff;
+    --primary-color-low: #423ed899;
+    --yellow: #efa00b;
+    --yellow-low: #f6aa1c;
+    --yellow-active: #d4992c;
+    --orange: #d65108;
+    --brown: #591f0a;
+    --border-color: #f6f3f333;
+    --two-night-color: #f6f3f399;
+    --two-night-color-hover: #f6f3f322;
+    --two-night-color-active: #f6f3f344;
+
     // Default layout
     --default-layout-header-height: 63px;
     --default-layout-width: 1024px;
@@ -34,8 +63,6 @@ body {
     font-size: 1.6rem;
     line-height: 1.5;
     text-rendering: optimizespeed;
-    color: var(--text-color);
-    background-color: var(--background-color);
 }
 
 button,
@@ -51,8 +78,6 @@ a {
 }
 
 // Custom tippy tooltip
-body {
-}
 
 // Scrollbar
 

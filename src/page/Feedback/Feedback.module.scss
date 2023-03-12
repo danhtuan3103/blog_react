@@ -1,0 +1,42 @@
+.wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+
+    flex-direction: column;
+    background-color: #353941;
+}
+
+.container {
+    margin-top: 72px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .title {
+        font-size: 3rem;
+        margin-bottom: 32px;
+        color: #fff;
+    }
+
+    .input {
+        min-height: 100px;
+        width: 400px;
+        font-family: Arial, Helvetica, sans-serif;
+        margin-top: 4px;
+        margin-bottom: 12px;
+        margin-left: 12px;
+        font-size: 1.6rem;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        outline: none;
+        resize: none;
+        overflow-y: hidden;
+
+        &:focus {
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        }
+    }
+}

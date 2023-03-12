@@ -1,4 +1,5 @@
 import classNames from 'classnames/bind';
+import { memo } from 'react';
 import styles from './Wrapper.module.scss';
 
 const cx = classNames.bind(styles);
@@ -14,4 +15,4 @@ function Wrapper({ className, children }) {
     );
 }
 
-export default Wrapper;
+export default memo(Wrapper);

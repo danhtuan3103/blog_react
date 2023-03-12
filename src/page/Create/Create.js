@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useAutoResize } from '~/hooks';
 import styles from './Create.module.scss';
 import classNames from 'classnames/bind';
@@ -40,17 +40,23 @@ function Create() {
         setListForm((pre) => [...pre, { id: uniqid(), text: '', type: 'form2' }]);
     };
 
-    const handleOnChange = (id, e) => {
-        let newFormValues = [...listForm];
-        const index = newFormValues.findIndex((form) => form.id === id);
-        newFormValues[index][e.target.name] = e.target.value;
-        setListForm(newFormValues);
-    };
+    const handleOnChange = useCallback(
+        (id, e) => {
+            let newFormValues = [...listForm];
+            const index = newFormValues.findIndex((form) => form.id === id);
+            newFormValues[index][e.target.name] = e.target.value;
+            setListForm(newFormValues);
+        },
+        [listForm],
+    );
 
-    const handleDelete = (id, ref) => {
-        const newForms = listForm.filter((form) => form.id !== id);
-        setListForm(newForms);
-    };
+    const handleDelete = useCallback(
+        (id, ref) => {
+            const newForms = listForm.filter((form) => form.id !== id);
+            setListForm(newForms);
+        },
+        [listForm],
+    );
 
     const handleSubmit = () => {
         setListForm([{ id: uniqid(), person1: '', person2: '', type: 'form1' }]);

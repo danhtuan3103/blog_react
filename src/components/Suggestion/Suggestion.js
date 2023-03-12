@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
-import instance from '~/config/axiosConfig';
+import { memo, useEffect, useState } from 'react';
+import { blogService } from '~/services';
 import styles from './Suggestion.module.scss';
 import SuggestItem from './SuggestItem';
 
@@ -9,17 +9,11 @@ function Suggestion({ topics, author }) {
     const [blogs, setBlogs] = useState([]);
 
     useEffect(() => {
-        instance
-            .post('/blog/suggestion', { topic: topics, author: author })
-            .then((res) => {
-                const data = res.data.data;
-                if (data) {
-                    setBlogs(data);
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        const fetchAPI = async () => {
+            const result = await blogService.suggestBlogs({ topic: topics, author: author });
+            setBlogs(result);
+        };
+        fetchAPI();
     }, [topics, author]);
     return (
         <div className={cx('suggest')}>
@@ -34,4 +28,4 @@ function Suggestion({ topics, author }) {
     );
 }
 
-export default Suggestion;
+export default memo(Suggestion);

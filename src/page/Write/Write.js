@@ -1,17 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './Write.module.scss';
 import { useSelector } from 'react-redux';
 import Button from '~/components/Button';
-import instance from '~/config/axiosConfig';
 import MDEditor, { commands } from '@uiw/react-md-editor';
 import '@uiw/react-md-editor/markdown-editor.css';
 import '@uiw/react-markdown-preview/markdown.css';
 import { useAutoResize } from '~/hooks';
 import Model from '~/components/Model/Model';
 import Export from './Export';
-import { sendNotification } from '~/services/socket';
+import { blogService } from '~/services';
 const cx = classNames.bind(styles);
 
 function Write() {
@@ -20,43 +19,50 @@ function Write() {
     const [thumbnail, setThumbnail] = useState('');
     const [topic, setTopic] = useState('');
     const [model, setModel] = useState(false);
-    const { user } = useSelector((state) => state);
+    const { user, theme } = useSelector((state) => state);
 
     const resize = useAutoResize(title);
     const navigate = useNavigate();
 
-    const handleChangeThumbnail = (e) => {
-        setThumbnail(e.target.value);
-    };
-
-    const handleChangeTopic = (e) => {
-        setTopic(e.target.value);
-    };
-    let timeout;
-    const handleSubmit = () => {
-        const data = { title, content, thumbnail, topic, author: user._id };
-
-        instance
-            .post('/blog/create', data)
-            .then(async (res) => {
-                navigate('/blog/' + res.data?.data?._id);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
-    const handleCloseModel = () => {
-        setModel(false);
-    };
     useEffect(() => {
         document.title = title || 'Write somthing';
-
-        return () => {
-            clearTimeout(timeout);
-        };
     }, [title]);
 
+    const handleChangeThumbnail = useCallback((e) => {
+        setThumbnail(e.target.value);
+    }, []);
+
+    const handleChangeTopic = useCallback((e) => {
+        setTopic(e.target.value);
+    }, []);
+
+    const handleSubmit = useCallback(() => {
+        const data = { title, content, thumbnail, topic, author: user._id };
+        if (!topic) {
+            alert('Hãy nhập ít nhất 1 topic');
+            return;
+        }
+        const fetchAPI = async () => {
+            const result = await blogService.createBlog({ data });
+            navigate('/blog/' + result._id);
+        };
+        fetchAPI();
+    }, [title, content, thumbnail, topic, user._id]);
+
+    const handleCloseModel = useCallback(() => {
+        setModel(false);
+    }, []);
+
     const handleExport = () => {
+        if (title.length < 10) {
+            alert('Tiêu đề phải lớn hơn 10 kí tự');
+            return;
+        }
+
+        if (content.length < 100) {
+            alert('Tiêu đề phải lớn hơn 100 kí tự');
+            return;
+        }
         setModel(true);
     };
     return (
@@ -70,7 +76,7 @@ function Write() {
                     setTitle(e.target.value);
                 }}
             />
-            <div className={cx('editor')} data-color-mode="light">
+            <div className={cx('editor')} data-color-mode={theme}>
                 {/* <div className="wmde-markdown-var"> </div> */}
                 <MDEditor
                     height={600}

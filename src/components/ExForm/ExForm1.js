@@ -2,6 +2,7 @@ import { useAutoResize } from '~/hooks';
 import classNames from 'classnames/bind';
 import styles from './ExForm.module.scss';
 import { FiTrash } from 'react-icons/fi';
+import { memo } from 'react';
 const cx = classNames.bind(styles);
 function ExFrom1({ id, value, handleOnChange, onDelete }) {
     const textRef = useAutoResize(value);
@@ -28,4 +29,4 @@ function ExFrom1({ id, value, handleOnChange, onDelete }) {
     );
 }
 
-export default ExFrom1;
+export default memo(ExFrom1);

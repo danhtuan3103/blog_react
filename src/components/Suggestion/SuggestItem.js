@@ -3,6 +3,7 @@ import styles from './Suggestion.module.scss';
 import Image from '../Image';
 import images from '~/assets/images';
 import { useNavigate } from 'react-router-dom';
+import { memo } from 'react';
 const cx = classNames.bind(styles);
 function SuggestItem({ blog }) {
     const navigate = useNavigate();
@@ -17,4 +18,4 @@ function SuggestItem({ blog }) {
     );
 }
 
-export default SuggestItem;
+export default memo(SuggestItem);

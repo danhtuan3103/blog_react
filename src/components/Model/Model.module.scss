@@ -23,14 +23,14 @@
 
     &:hover {
         .close-icon {
-            color: #292929;
+            color: var(--black);
         }
     }
 }
 
 .close-icon {
     font-size: 2.4rem;
-    color: #29292977;
+    color: var(--two-night-color);
 }
 
 .body {

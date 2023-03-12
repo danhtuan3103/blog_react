@@ -1,5 +1,5 @@
-export const sortByDate = (arr) => {
-    const sortArr = arr.sort((a, b) => {
+const sortByDate = (arr) => {
+    const sortArr = arr?.sort((a, b) => {
         const ad = new Date(a.createdAt);
         const bd = new Date(b.createdAt);
 
@@ -8,3 +8,5 @@ export const sortByDate = (arr) => {
 
     return sortArr;
 };
+
+export default sortByDate;

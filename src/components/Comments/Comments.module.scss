@@ -22,6 +22,7 @@
     right: 0;
     overflow: auto;
     --margin-left: 44px;
+    cursor: default;
 }
 
 .body {
@@ -36,6 +37,7 @@
     max-width: 100%;
     display: flex;
     align-items: flex-start;
+    cursor: pointer;
 }
 
 .reply-box {
@@ -47,15 +49,18 @@
 .avatar {
     width: 32px;
     height: 32px;
+    background-color: var(--black);
+
     border-radius: 50%;
     object-fit: cover;
     margin-right: 12px;
+    cursor: pointer;
 }
 
 .comment-placeholder {
     flex: 1;
     border-bottom: 1px solid var(--border-color);
-    color: #29292988;
+    color: var(--two-night-color);
     font-size: 1.3rem;
     padding: 4px;
     // display: flex;
@@ -90,6 +95,11 @@
 
 .name {
     font-weight: bold;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 .comment-content {
@@ -137,6 +147,8 @@
     line-height: 1.2;
     resize: none;
     outline: none;
+    background-color: var(--white);
+    color: var(--black);
     border: 1.5px solid var(--border-color);
     border-radius: 4px;
 
@@ -165,14 +177,14 @@
 
     &:hover {
         .close-icon {
-            color: #292929;
+            color: var(--black);
         }
     }
 }
 
 .close-icon {
     font-size: 2.4rem;
-    color: #29292977;
+    color: var(--two-night-color);
 }
 
 .see-more,
@@ -184,6 +196,7 @@
     margin-left: var(--margin-left);
     margin-bottom: 8px;
     min-width: 350px;
+    cursor: pointer;
 
     .icon {
         margin: 0 4px;
@@ -220,6 +233,8 @@
     }
 
     .avatar {
+        background-color: var(--black);
+
         width: 28px;
         height: 28px;
     }

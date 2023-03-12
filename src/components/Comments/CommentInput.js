@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import style from './Comments.module.scss';
 import Button from '~/components/Button';
@@ -10,9 +10,9 @@ function CommentInput({ setComment, reply = false, defaultValue = '', onSubmit =
     const [disabled, setDisabled] = useState(true);
     const ref = useRef();
 
-    // useEffect(() => {
-    //     ref.current.focus();
-    // }, []);
+    useEffect(() => {
+        ref.current.focus();
+    }, []);
 
     const handleOnChange = (e) => {
         setValue(e.target.value);
@@ -50,4 +50,4 @@ function CommentInput({ setComment, reply = false, defaultValue = '', onSubmit =
     );
 }
 
-export default CommentInput;
+export default memo(CommentInput);

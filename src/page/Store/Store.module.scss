@@ -3,6 +3,7 @@
     max-width: 1024px;
     width: 100%;
     // display: flex;
+    color: var(--text-color);
 }
 .container {
     max-width: 990px;
@@ -29,7 +30,7 @@
         // overflow: hidden;
         width: 100%;
         position: relative;
-        color: #29292999;
+        color: var(--two-night-color);
         cursor: pointer;
 
         &:hover {
@@ -48,7 +49,7 @@
             position: absolute;
             width: inherit;
             height: 2px;
-            background-color: black;
+            background-color: var(--black);
             bottom: -13px;
             left: 0;
         }
@@ -80,11 +81,16 @@
     font-size: 1.6rem;
     // margin-bottom: 8px;
     color: var(--text-color);
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 .tool-icon {
     margin-top: -8px;
-    color: #292929;
+    color: var(--text-color);
+
     opacity: 0.9;
     padding: 4px;
     cursor: pointer;
@@ -102,19 +108,21 @@
 
 .card-time {
     color: var(--primary-color);
+
     // margin-right: 12px;
 }
 
 .dot {
     padding: 0 6px;
-    padding-bottom: 15px;
+    padding-bottom: 8px;
     display: flex;
     text-align: top;
-    color: #29292988;
+    color: var(--text-color);
 }
 
 .author {
     color: #29292988;
+    color: var(--text-color);
 }
 
 // tippy
@@ -128,6 +136,7 @@
     width: 100%;
     justify-content: center;
     border-radius: 0;
+    color: var(--black);
 
     &:hover {
         background-color: var(--border-color);

@@ -1,6 +1,7 @@
 import classNames from 'classnames/bind';
 import styles from './Model.module.scss';
 import { MdClose } from 'react-icons/md';
+import { memo } from 'react';
 const cx = classNames.bind(styles);
 
 const fn = () => {};
@@ -16,4 +17,4 @@ function Model({ children, onBack = fn }) {
     );
 }
 
-export default Model;
+export default memo(Model);

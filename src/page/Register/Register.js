@@ -1,10 +1,11 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import classNames from 'classnames/bind';
 // import { signInWithGoogle, signInWithFacebook } from '../../auth/firebase';
+import { Validator } from '~/helper';
 import styles from './Register.module.scss';
 import Button from '~/components/Button';
-import instance from '~/config/axiosConfig';
+import { authService } from '~/services';
 const cx = classNames.bind(styles);
 function Register() {
     const navigate = useNavigate();
@@ -15,33 +16,63 @@ function Register() {
         passwordConfirm: '',
     });
 
+    const [error, setError] = useState(undefined);
+
     const handleChange = (e) => {
         setState({ ...state, [e.target.name]: e.target.value });
+        setError({ ...error, [e.target.name]: undefined });
+    };
+
+    const validator = (state) => {
+        let error = {};
+
+        error.username = Validator.isRequire(state.username, 'Vui lòng nhập tên đầy đủ');
+        error.password = Validator.isRequire(state.password, 'Vui lòng nhập mật khẩu');
+        error.email = Validator.isRequire(state.email, 'Vui lòng nhập email');
+        error.passwordConfirm = Validator.isRequire(state.passwordConfirm, 'Vui lòng nhập lại mật khẩu');
+        if (!error.username) {
+            error.username = Validator.minLength(state.username, 6);
+        }
+
+        if (!error.email) {
+            error.email = Validator.isEmail(state.email);
+        }
+
+        if (!error.password) {
+            error.password = Validator.minLength(state.password, 6);
+        }
+        if (!error.passwordConfirm) {
+            error.passwordConfirm = Validator.confirmPassword(
+                state.password,
+                state.passwordConfirm,
+                'Vui lòng nhập chính xác mật khẩu',
+            );
+        }
+
+        if (!error.username && !error.password && !error.passwordConfirm && !error.password) {
+            return true;
+        }
+        setError(error);
+        return false;
     };
 
     const handleSubmit = (e) => {
-        if (state.password === state.passwordConfirm) {
+        const isValid = validator(state);
+
+        if (isValid) {
             const data = {
                 username: state.username,
                 email: state.email,
                 password: state.password,
             };
 
-            instance
-                .post('/user/register', data)
-                .then(function (response) {
-                    const status = response.data.status;
-                    if (status && status === 'success') {
-                        alert('Successfully');
-                        navigate('/login');
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                    alert(error.response.data.message);
-                });
-        } else {
-            alert('Password is incorrect');
+            const fetchAPI = async () => {
+                const result = await authService.register({ data });
+                if (result) {
+                    navigate('/login');
+                }
+            };
+            fetchAPI();
         }
     };
     return (
@@ -61,10 +92,10 @@ function Register() {
                     </p>
 
                     <div className={cx('btn-block')}>
-                        <Button outline className={cx('btn')}>
+                        <Button outline className={cx('btn')} disabled>
                             Continute with Google
                         </Button>
-                        <Button outline className={cx('btn')}>
+                        <Button outline className={cx('btn')} disabled>
                             Continute with Facebook
                         </Button>
                     </div>
@@ -84,6 +115,7 @@ function Register() {
                             value={state.firstname}
                             onChange={handleChange}
                         />
+                        {error?.username && <span className={cx('error-mes')}>{error.username}</span>}
                         <input
                             className={cx('input')}
                             type="email"
@@ -92,6 +124,9 @@ function Register() {
                             value={state.email}
                             onChange={handleChange}
                         />
+
+                        {error?.email && <span className={cx('error-mes')}>{error.email}</span>}
+
                         <input
                             className={cx('input')}
                             type="password"
@@ -100,6 +135,8 @@ function Register() {
                             value={state.password}
                             onChange={handleChange}
                         />
+                        {error?.password && <span className={cx('error-mes')}>{error.password}</span>}
+
                         <input
                             className={cx('input')}
                             type="password"
@@ -108,6 +145,7 @@ function Register() {
                             value={state.passwordConfirm}
                             onChange={handleChange}
                         />
+                        {error?.passwordConfirm && <span className={cx('error-mes')}>{error.passwordConfirm}</span>}
                     </div>
                 </div>
                 <Button primary className={cx('btn-submit')} onClick={handleSubmit}>

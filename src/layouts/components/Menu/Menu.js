@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import styles from './Menu.module.scss';
@@ -9,17 +9,20 @@ import 'tippy.js/animations/scale.css';
 import MenuHeader from './MenuHeader';
 import Wrapper from '~/components/Wrapper';
 import SubHeader from './SubHeader';
-import images from '~/assets/images';
 
 const cx = classNames.bind(styles);
-function Menu({ items = [], children, hideOnClick = false, visible, setVisible }) {
+function Menu({ items = [], children, visible, setVisible }) {
     const [history, setHistory] = useState([{ data: items }]);
     const currentItems = history[history.length - 1];
     const { user } = useSelector((state) => state);
+
+    useEffect(() => {
+        setHistory([{ data: items }]);
+    }, [items]);
+
     const renderItems = () => {
         return currentItems.data.map((item, index) => {
             const isParent = !!item.children;
-
             return (
                 <MenuItem
                     key={index}
@@ -53,7 +56,7 @@ function Menu({ items = [], children, hideOnClick = false, visible, setVisible }
         return (
             <div className={cx('menu-list')} tabIndex="-1" {...attr}>
                 <Wrapper>
-                    <MenuHeader name={user.username} aka={user.email} avatar={images.fallbackAvatar} />
+                    <MenuHeader name={user.username} aka={user.email} avatar={user.avatar} />
                     {history.length > 1 && <SubHeader title={currentItems.title} onBack={handleBack} />}
                     <div className={cx('menu-body')}>{renderItems()}</div>
                 </Wrapper>
@@ -65,10 +68,9 @@ function Menu({ items = [], children, hideOnClick = false, visible, setVisible }
             <Tippy
                 visible={visible}
                 offset={[12, 20]}
-                trigger={'click'}
+                // trigger="click"
                 delay={[0, 700]}
                 placement="bottom-end"
-                // animation={true}
                 onClickOutside={() => setVisible(false)}
                 interactive={true}
                 render={renderResult}
@@ -80,4 +82,4 @@ function Menu({ items = [], children, hideOnClick = false, visible, setVisible }
     );
 }
 
-export default Menu;
+export default memo(Menu);

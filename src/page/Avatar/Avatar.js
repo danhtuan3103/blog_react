@@ -4,9 +4,9 @@ import Button from '~/components/Button';
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
-import instance from '~/config/axiosConfig';
 import { updateAvatar } from '~/auth/redux/actions';
 import { useNavigate } from 'react-router-dom';
+import { authService } from '~/services';
 
 const cx = classNames.bind(styles);
 function Avatar() {
@@ -16,12 +16,9 @@ function Avatar() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(() => {
-        console.log(process.env.REACT_APP_API_URL);
-        axios(`${process.env.REACT_APP_CLIENT_URL}/images/avatar/avatars.json`)
+        axios(`${window.location.origin}/images/avatar/avatars.json`)
             .then((res) => {
                 const data = res.data;
-                console.log(data);
-
                 setListImage(data);
             })
             .catch((err) => console.log(err));
@@ -34,17 +31,12 @@ function Avatar() {
     };
 
     const handleClickChoose = () => {
-        instance
-            .post('/user/avatar', { avatar: thumb })
-            .then((res) => {
-                const data = res.data.data;
-                console.log(data);
-                if (data) {
-                    dispatch(updateAvatar(res.data.data));
-                    navigate('/');
-                }
-            })
-            .catch((err) => console.log(err));
+        const fetchAPI = async () => {
+            const result = await authService.updateAvatar({ avatar: thumb });
+            dispatch(updateAvatar(result));
+            navigate('/');
+        };
+        fetchAPI();
     };
 
     return (

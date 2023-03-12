@@ -7,28 +7,28 @@ import { useEffect } from 'react';
 import { initiateSocketConnection, disconnectSocket, listenSocket } from '~/services/socket';
 import { useDispatch, useSelector } from 'react-redux';
 import { getNotifications } from '~/auth/redux/actions';
-import fetchNotifications from './services/fetchNotifications';
-import useLocalStorage from 'use-local-storage';
-
+import * as notificationService from './services/notificationService';
+import { handleAuth } from './helper';
 function App() {
     const dispatch = useDispatch();
-    const [theme, setTheme] = useLocalStorage('theme', 'light');
+    const { theme, isAuthenticated } = useSelector((state) => state);
     useEffect(() => {
-        setTheme('dark');
-
-        fetchNotifications()
-            .then((res) => {
-                dispatch(getNotifications(res.data));
-            })
-            .catch((err) => {
-                console.log(err);
-            });
         initiateSocketConnection();
         listenSocket(dispatch);
         return () => {
             disconnectSocket();
         };
     }, []);
+
+    useEffect(() => {
+        const fetchAPI = async () => {
+            const result = await notificationService.getNotifications();
+            dispatch(getNotifications(result));
+        };
+
+        handleAuth({ isAuthenticated, authHandle: fetchAPI });
+    }, [isAuthenticated]);
+
     return (
         <Router>
             <div className="App" data-theme={theme}>

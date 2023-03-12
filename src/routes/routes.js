@@ -12,6 +12,9 @@ import Profile from '~/page/Profile';
 import Store from '~/page/Store';
 import SearchDetail from '~/page/SearchDetail';
 import Avatar from '~/page/Avatar';
+import Feedback from '~/page/Feedback';
+import FeedbackList from '~/page/FeedbackList';
+import Error from '~/page/Error';
 
 const publicRoutes = [
     { path: config.routes.home, component: Home, layout: OtherLayout },
@@ -25,6 +28,9 @@ const publicRoutes = [
     { path: config.routes.profile, component: Profile },
     { path: config.routes.store, component: Store },
     { path: config.routes.avatar_selector, component: Avatar, layout: null },
+    { path: config.routes.feedback, component: Feedback, layout: null },
+    { path: config.routes.list_feedback, component: FeedbackList, layout: null },
+    { path: config.routes.error, component: Error, layout: null },
 ];
 
 const protectedRoutes = [{ path: config.routes.write_blog, component: Write }];

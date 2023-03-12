@@ -36,7 +36,7 @@ a {
 
 .primary {
     background-color: var(--primary-color);
-    color: var(--white);
+    color: #fff;
 
     &:hover {
         background-color: #423ed8;
@@ -99,6 +99,7 @@ a {
 
 .text {
     background-color: transparent;
+    color: var(--text-color);
     &:hover {
         text-decoration: underline;
     }

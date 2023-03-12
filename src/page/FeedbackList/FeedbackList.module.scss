@@ -1,0 +1,34 @@
+.wrapper {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #353941;
+    padding: 24px 12px;
+
+    .feedbacks {
+        display: flex;
+        flex-wrap: wrap;
+        height: auto;
+    }
+    .feedback {
+        flex: 1 1 300px;
+        width: 100%;
+        // height: 150px;
+        max-height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 12px;
+        border: 1px solid var(--primary-color);
+        margin: 12px;
+        padding: 16px 12px;
+    }
+
+    .content {
+        padding: 12px;
+        color: #fff;
+        font-size: 1.6rem;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+}
