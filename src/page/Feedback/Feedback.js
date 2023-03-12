@@ -33,6 +33,7 @@ function Feedback() {
                     type="text"
                     name="text"
                     className={cx('input')}
+                    placeholder="Viết ý kiến, bug hoặc liên hệ .... "
                     value={feedback}
                     onChange={(e) => setFeedback(e.target.value)}
                 />
