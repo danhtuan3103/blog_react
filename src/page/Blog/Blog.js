@@ -121,7 +121,8 @@ function Blog() {
 
     const handleClickTopic = useCallback(
         (topic) => {
-            navigate(`/search?topic=${topic}`);
+            console.log(topic);
+            navigate(`/search?topic=${topic.trim()}`);
         },
         [blog],
     );

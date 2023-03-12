@@ -109,18 +109,21 @@
     padding: 24px 0;
     // border-top: 3px solid var(--primary-color);
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     // background-color: #333;
 
     .topics-title {
         font-size: 1.4rem;
         margin-right: 12px;
+        margin-bottom: 8px;
     }
 
     .topic {
         padding: 4px 12px;
         border-radius: 4px;
         margin: 0 8px;
+        margin-bottom: 8px;
         font-size: 1.3rem;
         color: var(--two-night-color);
         background-color: var(--border-color);
