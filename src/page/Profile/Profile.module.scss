@@ -72,9 +72,12 @@
 
 .box {
     // height: 100%;
+    background-color: var(--header-color);
+}
+
+.box-body {
     max-height: 400px;
     overflow: auto;
-    background-color: var(--header-color);
 }
 
 .item {

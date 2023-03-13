@@ -75,7 +75,7 @@ function BottomHead({ menu, nonReaded }) {
                     />
                 </a>
             )}
-            <Notification visible={visibleNoti} setVisible={setVisibleNoti}>
+            <Notification visible={visibleNoti} setVisible={setVisibleNoti} mobile={true}>
                 <span
                     className={cx('noti-icon', 'icon-block')}
                     onClick={() => setVisibleNoti(true)}

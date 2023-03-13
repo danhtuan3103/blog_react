@@ -12,7 +12,7 @@ import instance from '~/config/axiosConfig';
 import { memo, useCallback } from 'react';
 const cx = classNames.bind(styles);
 
-function Notification({ children, visible, setVisible }) {
+function Notification({ children, visible, setVisible, mobile = false }) {
     const { notifications, user } = useSelector((state) => state);
     // console.log(notifications);
 
@@ -59,7 +59,7 @@ function Notification({ children, visible, setVisible }) {
     const renderResult = (attr) => {
         return (
             <div className={cx('noti-list')} tabIndex="-1" {...attr}>
-                <Wrapper>
+                <Wrapper className={cx({ mobile: mobile })}>
                     <NotiHeader onClick={handleReadAll} />
                     <div className={cx('noti-body')}>{renderItems()} </div>
                 </Wrapper>

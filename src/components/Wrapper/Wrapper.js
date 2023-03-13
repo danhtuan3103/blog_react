@@ -9,7 +9,7 @@ function Wrapper({ className, children }) {
         e.stopPropagation();
     };
     return (
-        <div className={cx('wrapper', className)} onClick={handleClick}>
+        <div className={cx('wrapper', { [className]: className })} onClick={handleClick}>
             {children}
         </div>
     );
