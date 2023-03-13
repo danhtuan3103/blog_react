@@ -97,8 +97,9 @@ function Blog() {
     const handleLikeButton = useCallback(() => {
         const fetchAPI = async () => {
             const result = await likeService.likeBlog({ blog_id: id });
-            setLiked(result.liked);
-            setLikes(result.count);
+            console.log(result);
+            setLiked(result?.liked);
+            setLikes(result?.count);
             if (user._id !== blog?.author?._id) {
                 // console.log(' Lik ');
                 sendNotification({

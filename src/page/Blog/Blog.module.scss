@@ -83,6 +83,10 @@
     min-height: calc(100vh - var(--default-layout-header-height));
 
     .title {
+        max-width: 100%;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
         line-height: 1.6;
     }
     h2,

@@ -116,6 +116,7 @@
     display: flex;
     padding: 8px;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .info {
@@ -130,11 +131,15 @@
     font-size: 2rem;
     font-weight: 700;
     line-height: 1.6;
+    max-width: 100%;
     margin-bottom: 0;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
     cursor: pointer;
 }
 
 .description {
+    max-width: 100%;
     font-size: 1.5rem;
     line-height: 1.6;
     margin-top: 4px;
@@ -142,7 +147,7 @@
     display: -webkit-box;
     overflow: hidden;
     white-space: normal;
-    word-wrap: normal;
+    word-wrap: break-word;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     cursor: pointer;
