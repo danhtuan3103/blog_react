@@ -8,7 +8,7 @@ import Button from '~/components/Button';
 import { authService } from '~/services';
 import { useDispatch } from 'react-redux';
 import { login } from '~/auth/redux/actions';
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+// import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 
 const cx = classNames.bind(styles);
 function Register() {
@@ -62,29 +62,29 @@ function Register() {
 
     // Facebook
 
-    const responseFacebook = (response) => {
-        const { email, name, accessToken } = response;
-        const url = response.picture.data.url;
-        console.log(response);
+    // const responseFacebook = (response) => {
+    //     const { email, name, accessToken } = response;
+    //     const url = response.picture.data.url;
+    //     console.log(response);
 
-        const fetchAPI = async () => {
-            const result = await authService.fbSignup({ data: { email, name, url, accessToken } });
-            dispatch(
-                login({
-                    accessToken: result.accessToken,
-                    refreshToken: result.refreshToken,
-                    data: result.user,
-                }),
-            );
-            window.location.href = '/';
-        };
+    //     const fetchAPI = async () => {
+    //         const result = await authService.fbSignup({ data: { email, name, url, accessToken } });
+    //         dispatch(
+    //             login({
+    //                 accessToken: result.accessToken,
+    //                 refreshToken: result.refreshToken,
+    //                 data: result.user,
+    //             }),
+    //         );
+    //         window.location.href = '/';
+    //     };
 
-        if (!email) {
-            alert('Not Found');
-        } else {
-            fetchAPI();
-        }
-    };
+    //     if (!email) {
+    //         alert('Not Found');
+    //     } else {
+    //         fetchAPI();
+    //     }
+    // };
 
     const handleChange = (e) => {
         setState({ ...state, [e.target.name]: e.target.value });
@@ -163,7 +163,7 @@ function Register() {
                         <Button id="signUpDiv" outline className={cx('btn')} onClick={handleCustomButtonClick}>
                             Continute with Google
                         </Button>
-                        <FacebookLogin
+                        {/* <FacebookLogin
                             appId={process.env.REACT_APP_FACEBOOK_APP_ID}
                             autoLoad={false}
                             fields="name,email,picture"
@@ -175,7 +175,7 @@ function Register() {
                                     Continute with Facebook
                                 </Button>
                             )}
-                        />
+                        /> */}
                     </div>
 
                     <div className={cx('line')}>

@@ -8,7 +8,7 @@ import { login } from '~/auth/redux/actions';
 import { authService } from '~/services';
 import { Validator } from '~/helper';
 
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+// import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 // Import the functions you need from the SDKs you need
 const cx = classNames.bind(styles);
 function Login() {
@@ -62,28 +62,28 @@ function Login() {
 
     // FABEBOOK
 
-    const responseFacebook = (response) => {
-        const { email } = response;
+    // const responseFacebook = (response) => {
+    //     const { email } = response;
 
-        const fetchAPI = async () => {
-            const result = await authService.fbSignin({ data: { email } });
+    //     const fetchAPI = async () => {
+    //         const result = await authService.fbSignin({ data: { email } });
 
-            dispatch(
-                login({
-                    accessToken: result.accessToken,
-                    refreshToken: result.refreshToken,
-                    data: result.user,
-                }),
-            );
-            path ? (window.location.href = path) : (window.location.href = '/');
-        };
+    //         dispatch(
+    //             login({
+    //                 accessToken: result.accessToken,
+    //                 refreshToken: result.refreshToken,
+    //                 data: result.user,
+    //             }),
+    //         );
+    //         path ? (window.location.href = path) : (window.location.href = '/');
+    //     };
 
-        if (!email) {
-            alert('Not Found');
-        } else {
-            fetchAPI();
-        }
-    };
+    //     if (!email) {
+    //         alert('Not Found');
+    //     } else {
+    //         fetchAPI();
+    //     }
+    // };
 
     const validator = (state) => {
         let error = {};
@@ -154,7 +154,7 @@ function Login() {
                         <Button outline className={cx('btn')} onClick={handleCustomButtonClick}>
                             Continute with Google
                         </Button>
-                        <FacebookLogin
+                        {/* <FacebookLogin
                             appId={process.env.REACT_APP_FACEBOOK_APP_ID}
                             autoLoad={false}
                             fields="name,email,picture"
@@ -166,7 +166,7 @@ function Login() {
                                     Continute with Facebook
                                 </Button>
                             )}
-                        />
+                        /> */}
                     </div>
 
                     <div className={cx('line')}>
