@@ -58,7 +58,10 @@
     width: 100%;
     position: absolute;
     top: 50%;
+
     transform: translateY(-50%);
+    display: flex;
+
     justify-content: center;
     padding: 24px;
     animation: fadeIn 0.5s;
@@ -167,6 +170,10 @@
         &:hover {
             border-color: #a4a1a1;
         }
+    }
+
+    .tag-name {
+        color: #333;
     }
 
     .close-icon {

@@ -166,7 +166,15 @@
 .info {
 }
 
-.item-title {
+.item-title,
+.item-author {
+    display: -webkit-box;
+    overflow: hidden;
+    white-space: normal;
+    word-wrap: break-word;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow-wrap: break-word;
 }
 
 .author {
