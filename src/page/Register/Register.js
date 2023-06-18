@@ -1,14 +1,20 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 // import { signInWithGoogle, signInWithFacebook } from '../../auth/firebase';
 import { Validator } from '~/helper';
 import styles from './Register.module.scss';
 import Button from '~/components/Button';
 import { authService } from '~/services';
+import { useDispatch } from 'react-redux';
+import { login } from '~/auth/redux/actions';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+
 const cx = classNames.bind(styles);
 function Register() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     const [state, setState] = useState({
         username: '',
         email: '',
@@ -17,6 +23,68 @@ function Register() {
     });
 
     const [error, setError] = useState(undefined);
+    useEffect(() => {
+        // Khởi tạo Google Sign-In
+        window.google.accounts.id.initialize({
+            client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+            callback: handleGoogleSignUp,
+        });
+    }, []);
+
+    const handleGoogleSignUp = (response) => {
+        // Xử lý phản hồi khi đăng nhập thành công
+        const { credential } = response;
+        console.log('Access token:', credential);
+
+        // Gửi token về server để xác thực
+        // Và thực hiện các thao tác khác sau khi đăng nhập thành công
+
+        const fetchAPI = async () => {
+            const result = await authService.signup({ token: credential });
+            dispatch(
+                login({
+                    accessToken: result.accessToken,
+                    refreshToken: result.refreshToken,
+                    data: result.user,
+                }),
+            );
+            window.location.href = '/';
+        };
+
+        fetchAPI();
+    };
+
+    const handleCustomButtonClick = () => {
+        console.log('Click ');
+        window.google.accounts.id.prompt();
+        console.log('Finnish');
+    };
+
+    // Facebook
+
+    const responseFacebook = (response) => {
+        const { email, name, accessToken } = response;
+        const url = response.picture.data.url;
+        console.log(response);
+
+        const fetchAPI = async () => {
+            const result = await authService.fbSignup({ data: { email, name, url, accessToken } });
+            dispatch(
+                login({
+                    accessToken: result.accessToken,
+                    refreshToken: result.refreshToken,
+                    data: result.user,
+                }),
+            );
+            window.location.href = '/';
+        };
+
+        if (!email) {
+            alert('Not Found');
+        } else {
+            fetchAPI();
+        }
+    };
 
     const handleChange = (e) => {
         setState({ ...state, [e.target.name]: e.target.value });
@@ -92,12 +160,22 @@ function Register() {
                     </p>
 
                     <div className={cx('btn-block')}>
-                        <Button outline className={cx('btn')} disabled>
+                        <Button id="signUpDiv" outline className={cx('btn')} onClick={handleCustomButtonClick}>
                             Continute with Google
                         </Button>
-                        <Button outline className={cx('btn')} disabled>
-                            Continute with Facebook
-                        </Button>
+                        <FacebookLogin
+                            appId={process.env.REACT_APP_FACEBOOK_APP_ID}
+                            autoLoad={false}
+                            fields="name,email,picture"
+                            scope="public_profile"
+                            // onClick={componentClicked}
+                            callback={responseFacebook}
+                            render={(renderProps) => (
+                                <Button outline className={cx('btn')} onClick={renderProps.onClick}>
+                                    Continute with Facebook
+                                </Button>
+                            )}
+                        />
                     </div>
 
                     <div className={cx('line')}>

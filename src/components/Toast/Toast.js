@@ -19,19 +19,23 @@ function Toast() {
         return () => clearTimeout(timeout);
     }, [toasts]);
 
-    return (
-        <div className={cx('wrapper')}>
-            <div className={cx('container')}>
-                {toasts.map((mes, index) => {
-                    return (
-                        <p key={index} className={cx('toast', { [mes.type]: mes.type })}>
-                            {mes.mess}
-                        </p>
-                    );
-                })}
+    if (toasts?.length > 0) {
+        return (
+            <div className={cx('wrapper')}>
+                <div className={cx('container')}>
+                    {toasts.map((mes, index) => {
+                        return (
+                            <p key={index} className={cx('toast', { [mes.type]: mes.type })}>
+                                {mes.mess}
+                            </p>
+                        );
+                    })}
+                </div>
             </div>
-        </div>
-    );
+        );
+    } else {
+        return;
+    }
 }
 
 export default memo(Toast);

@@ -7,10 +7,12 @@ import { useDebounce } from '~/hooks';
 import PostHeader from '../Store/PostHeader';
 import UserCard from './UseCard';
 import BlogCard from './BlogCard';
+import Loading from '~/components/Loading/Loading';
 
 const cx = classNames.bind(styles);
 
 function SearchDetail() {
+    const [loading, setLoading] = useState(false);
     const [result, setResult] = useState([]);
     const ref = useRef();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -34,15 +36,19 @@ function SearchDetail() {
         setResult([]);
         if (type === 'posts') {
             const fetchAPI = async () => {
+                setLoading(true);
                 const result = await (await instance.get(`/blog?q=${searchValue}`)).data;
                 setResult(result.data);
+                setLoading(false);
             };
 
             fetchAPI();
         } else if (type === 'author') {
             const fetchAPI = async () => {
+                setLoading(true);
                 const result = await (await instance.get(`/user?q=${searchValue}`)).data;
                 setResult(result.data);
+                setLoading(false);
             };
 
             fetchAPI();
@@ -77,6 +83,7 @@ function SearchDetail() {
                     <PostHeader types={TYPES} />
 
                     <div className={cx('body')}>
+                        {/* {loading && <Loading />} */}
                         {type === 'posts' &&
                             result.map((post, index) => {
                                 return <BlogCard key={index} blog={post} />;

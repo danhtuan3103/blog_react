@@ -61,8 +61,10 @@
 }
 
 .avatar {
-    width: 46px;
-    height: 46px;
+    max-width: 46px;
+    max-height: 46px;
+    min-height: 46px;
+    min-width: 46px;
     background-color: var(--black);
     object-fit: cover;
     border-radius: 50%;

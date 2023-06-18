@@ -10,7 +10,6 @@ const instance = axios.create({
 
 async function refreshTokenFn() {
     const token = await instance.getLocalRefreshToken();
-
     return (await instance.post('/user/refresh-token', { refreshToken: token })).data;
 }
 
@@ -26,6 +25,7 @@ instance.interceptors.request.use(
 
         const token = await instance.getLocalAccessToken();
         config.headers.common['authorization'] = 'Bearer ' + token;
+
         return config;
     },
     (err) => {
@@ -44,9 +44,10 @@ instance.interceptors.response.use(
 
         if (code && code === 401) {
             if (message && message === 'jwt expired') {
-                // console.log('Truong hop token het han');
+                console.log('Truong hop token het han');
 
                 const { accessToken, refreshToken } = await refreshTokenFn();
+                console.log('Token --- ', refreshToken, accessToken);
                 // console.log(accessToken, refreshToken);
                 if (accessToken && refreshToken) {
                     // console.log('Set new Token');

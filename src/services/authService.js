@@ -31,9 +31,68 @@ export const register = async ({ data }) => {
     }
 };
 
+export const signin = async ({ token }) => {
+    try {
+        const res = await request.post('/user/signin/gg', { token });
+
+        return res.data;
+    } catch (error) {
+        handleError(error);
+        console.log(error);
+    }
+};
+
+export const signup = async ({ token }) => {
+    try {
+        const res = await request.post('/user/signup/gg', { token });
+
+        return res.data;
+    } catch (error) {
+        handleError(error);
+        console.log(error);
+    }
+};
+
+export const fbSignup = async ({ data }) => {
+    try {
+        const res = await request.post('/user/signup/fb', data);
+        return res.data;
+    } catch (error) {
+        handleError(error);
+        console.log(error);
+    }
+};
+
+export const fbSignin = async ({ data }) => {
+    try {
+        const res = await request.post('/user/signin/fb', data);
+
+        return res.data;
+    } catch (error) {
+        handleError(error);
+        console.log(error);
+    }
+};
+
+export const uploadAvatar = async ({ avatar }) => {
+    const customConfig = {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    };
+
+    console.log(avatar);
+    try {
+        const res = await request.put('/user/avatar/upload', avatar, customConfig);
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export const updateAvatar = async ({ avatar }) => {
     try {
-        const res = await request.post('/user/avatar', { avatar });
+        const res = await request.put('/user/avatar/update', { avatar });
         return res.data;
     } catch (error) {
         console.log(error);

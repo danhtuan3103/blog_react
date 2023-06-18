@@ -16,6 +16,7 @@ import { sendNotification } from '~/services/socket';
 import { useDispatch } from 'react-redux';
 import { addToast } from '~/auth/redux/actions';
 import { blogService, likeService, bookmarkService } from '~/services';
+import Markdown from '~/components/MarkDown/MarkDown';
 const cx = classNames.bind(styles);
 
 function Blog() {
@@ -161,12 +162,7 @@ function Blog() {
                     author={blog?.author?.username}
                     time={timeCaculate(blog?.createdAt)}
                 />
-                <MDEditor.Markdown
-                    source={blog?.content}
-                    style={{ whiteSpace: 'pre-wrap' }}
-                    className={cx('preview')}
-                />
-
+                <Markdown className={cx('preview')} text={blog?.content} />
                 <div className={cx('statistical')}>
                     <div className={cx('like')} onClick={handleLikeButton}>
                         {liked ? (

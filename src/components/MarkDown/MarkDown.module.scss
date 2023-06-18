@@ -1,0 +1,70 @@
+.wrapper {
+    --font-code: 'SF Mono', monospace;
+    width: 100%;
+    color: var(--text-color);
+
+    p,
+    li,
+    table {
+        font-size: 1.7rem;
+        margin: 6px 0;
+        width: 100%;
+        overflow: auto;
+    }
+
+    table {
+        width: 100%;
+    }
+    table tr th,
+    table tr td {
+        border: 1px solid #e6dfdd;
+        font-size: 1.5rem;
+        line-height: 1.6;
+        padding: 2px 4px 2px 12px;
+        text-align: left;
+    }
+    code:not([class]) {
+        background-color: var(--border-color);
+        border-radius: 3px;
+        padding: 3px 4px;
+        white-space: pre-wrap !important;
+    }
+
+    code {
+        font-family: var(--font-code);
+        font-size: 1.4rem;
+        font-family: monospace, monospace;
+        font-size: 1em;
+    }
+
+    hr {
+        background-color: #ddd;
+        border: transparent;
+        height: 1px;
+        margin: 30px 0;
+    }
+
+    blockquote {
+        border-left: 4px solid var(--primary-color);
+        color: var(--text-color);
+        opacity: 0.8;
+        margin-left: 0;
+        padding: 1px 0 1px 20px;
+        background-color: transparent;
+    }
+
+    a {
+        text-decoration: underline;
+    }
+
+    pre {
+        background-color: var(--text-color);
+        padding: 15px;
+        border-radius: 12px;
+    }
+
+    code[class*='language-'] {
+        background: transparent;
+        color: var(--background-color);
+    }
+}

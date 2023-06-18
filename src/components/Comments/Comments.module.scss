@@ -12,29 +12,29 @@
 .wrapper {
     max-width: 700px;
     width: 100%;
-    max-height: 100vh;
-    height: 100%;
     background-color: var(--white);
-    padding: 24px;
+    padding-left: 24px;
+    padding-top: 0;
     animation: fadeIn 0.3s ease;
-    position: absolute;
-    top: 0;
-    right: 0;
-    overflow: auto;
+    height: 100%;
+    float: right;
     --margin-left: 44px;
     cursor: default;
 }
 
 .body {
-    margin-top: 50px;
-    padding-right: 50px;
-    min-width: 100%;
+    width: 100%;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    height: 100%;
+    overflow: scroll;
 }
 
 .write,
 .reply-box {
     margin-top: 24px;
-    max-width: 100%;
+    width: 100%;
+    max-width: 90%;
     display: flex;
     align-items: flex-start;
     cursor: pointer;
@@ -136,6 +136,7 @@
 
 .comment-input {
     flex: 1;
+    transition: display 0.5s linear;
 }
 
 .text-input {
@@ -164,17 +165,12 @@
 }
 
 .close {
-    // background-color: red;
-    position: fixed;
-    top: 12px;
-    right: 0px;
-    padding: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
     cursor: pointer;
-
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-weight: bold;
+    transition: color 0.2s ease-in;
     &:hover {
         .close-icon {
             color: var(--black);
@@ -218,7 +214,7 @@
 .reply {
     margin-top: 0;
     margin-left: var(--margin-left);
-    padding: 4px 0px 4px 12px;
+    padding: 4px 0px 0px 12px;
     position: relative;
 
     &::before {
@@ -242,15 +238,20 @@
 
 @media (max-width: 768px) {
     .wrapper {
-        top: 45%;
+        position: absolute;
+        top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         height: 80vh;
+
         border-radius: 16px;
         padding: 12px;
 
+        .body {
+            padding: 0 24px;
+        }
         .close {
-            position: fixed;
+            position: absolute;
             top: 12px;
             right: 12px;
         }

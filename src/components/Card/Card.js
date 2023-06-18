@@ -1,9 +1,10 @@
+import PropTypes from 'prop-types';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect, memo, useCallback } from 'react';
 import styles from './Card.module.scss';
 import classNames from 'classnames/bind';
 import { FaCommentAlt } from 'react-icons/fa';
-import { AiFillLike, AiFillEye } from 'react-icons/ai';
+import { AiFillLike } from 'react-icons/ai';
 import CardHeader from './CardHeader';
 import { sendNotification } from '~/services/socket';
 import { useSelector } from 'react-redux';
@@ -13,6 +14,7 @@ import { bookmarkService } from '~/services';
 import { handleAuth } from '~/helper';
 
 import Image from '~/components/Image';
+import { isPunctChar } from 'markdown-it/lib/common/utils';
 
 const cx = classNames.bind(styles);
 
@@ -73,7 +75,7 @@ function Card({ className, blog }) {
                     sendNotification({
                         notification: {
                             type: isBookmarked ? 'UN_STORE' : 'STORE',
-                            receiver: blog?.author._id,
+                            receiver: blog?.author?._id,
                             sender: user?._id,
                             target: blog?._id,
                         },
@@ -100,7 +102,7 @@ function Card({ className, blog }) {
             <div className={cx('body')}>
                 <div className={cx('info')}>
                     <h2 className={cx('title')}>{blog?.title}</h2>
-                    <p className={cx('description')}>{blog?.content}</p>
+                    <div className={cx('description')}>{blog?.content}</div>
 
                     <div className={cx('statistical')}>
                         <span className={cx('number')}>
@@ -118,5 +120,10 @@ function Card({ className, blog }) {
         </div>
     );
 }
+
+Card.propTypes = {
+    className: PropTypes.string,
+    blog: PropTypes.object.isRequired,
+};
 
 export default memo(Card);

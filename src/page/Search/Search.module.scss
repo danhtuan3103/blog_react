@@ -133,6 +133,13 @@
     justify-content: center;
 }
 
+.loading {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 52px;
+}
+
 @media (min-width: 38.8125rem) {
     .header {
         line-height: 1.2727272727272727;

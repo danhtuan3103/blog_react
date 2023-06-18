@@ -8,12 +8,15 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 import useTitle from '~/hooks/useTitle';
 import Pagination from '~/components/Pagination';
 import TopicItem from './TopicItem';
+import Loading from '~/components/Loading/Loading';
+
 const cx = classNames.bind(styles);
 
 function SearchPage() {
     const [cards, setCards] = useState([]);
     const [searchParams, setSearchParams] = useSearchParams();
     const [page, setPage] = useState(searchParams.get('page') || 1);
+    const [loading, setLoading] = useState(false);
     const location = useLocation().pathname;
     useTitle('Search');
 
@@ -23,10 +26,11 @@ function SearchPage() {
     useEffect(() => {
         setSearchParams({ topic, page });
         const fetchApi = async () => {
+            setLoading(true);
             const result = await blogService.getBlogs({ topic, page });
             setCards(result);
+            setLoading(false);
         };
-
         fetchApi();
     }, [page, topic, searchParams, location]);
 
@@ -67,9 +71,16 @@ function SearchPage() {
             </div>
 
             <div className={cx('list')}>
-                {cards?.map((card, index) => {
-                    return <Card key={index} className={cx('card')} blog={card}></Card>;
-                })}
+                {!loading ? (
+                    cards &&
+                    cards.map((card, index) => {
+                        return <Card key={index} className={cx('card')} blog={card}></Card>;
+                    })
+                ) : (
+                    <div className={cx('loading')}>
+                        <Loading />
+                    </div>
+                )}
             </div>
 
             <div className={cx('pagination')}>

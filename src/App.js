@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getNotifications } from '~/auth/redux/actions';
 import * as notificationService from './services/notificationService';
 import { handleAuth } from './helper';
+import { Suspense } from 'react';
+import Loading from './components/Loading/Loading';
 function App() {
     const dispatch = useDispatch();
     const { theme, isAuthenticated } = useSelector((state) => state);
@@ -48,7 +50,9 @@ function App() {
                                 path={route.path}
                                 element={
                                     <Layout>
-                                        <Page />
+                                        <Suspense fallback={<Loading />}>
+                                            <Page />
+                                        </Suspense>
                                     </Layout>
                                 }
                             />

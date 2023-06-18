@@ -21,6 +21,7 @@ function Profile() {
     useTitle(user?.username || 'Profile');
     const navigate = useNavigate();
 
+    console.log(activitys.length);
     useEffect(() => {
         const fetchAPI = async () => {
             const _result = await authService.getInfo({ id });
@@ -31,6 +32,8 @@ function Profile() {
         fetchAPI();
     }, [id]);
     let blogs = user?.blogs || [];
+
+    console.log(blogs);
 
     const handleClickUser = (id) => {
         navigate(`/profile/${id}`);
@@ -54,85 +57,74 @@ function Profile() {
                 <div className={cx('left-side')}>
                     <Box title="Giới thiệu" className={cx('box')}>
                         <div className={cx('item')}>
-                            <Image className={cx('img')} src={user?.avatar} fallBack={images.fallbackAvatar} />
-                            <p className={cx('content')}>Đã tham gia vào {timeCaculate(user?.createdAt)}</p>
+                            <Image
+                                className={cx('img')}
+                                src={user.avatar}
+                                fallback={images.fallbackAvatar}
+                                alt={user.username}
+                            />
+                            <p className={cx('text')}>
+                                Bạn đã tham gia vào blog được{' '}
+                                <strong className={cx('strong-text')}>{timeCaculate(user.createdAt)}</strong>
+                            </p>
                         </div>
                     </Box>
 
-                    <Box title="Hoạt động gần đây" className={cx('box')}>
-                        <div className={cx('box-body')}>
-                            {activitys?.length > 0 ? (
-                                activitys?.map((ac, index) => {
-                                    return (
-                                        <div className={cx('item')} key={index}>
-                                            <Image
-                                                className={cx('img')}
-                                                src={user?.avatar}
-                                                fallBack={images.fallbackAvatar}
-                                            />
-                                            <div className={cx('content')}>
-                                                <p className={cx('text')}>
-                                                    <strong
-                                                        className={cx('strong-text')}
-                                                        onClick={() => handleClickUser(ac?.sender?._id)}
-                                                    >
-                                                        {ac.sender?.username}
-                                                    </strong>{' '}
-                                                    đã
-                                                    <span className={cx('action')}>
-                                                        {' '}
-                                                        {getTypeNotifiication(ac?.type)}{' '}
-                                                    </span>
-                                                    <strong
-                                                        className={cx('strong-text')}
-                                                        onClick={() => handleClickBlog(ac?.target?._id)}
-                                                    >
-                                                        {ac?.target?.title}
-                                                    </strong>
-                                                </p>
-                                                {ac.message && <p className={cx('mess')}>{ac?.message}</p>}
-                                                <i className={cx('date')}>{timeCaculate(ac?.createdAt)}</i>
-                                            </div>
-                                        </div>
-                                    );
-                                })
-                            ) : (
-                                <div className={cx('no-data')}>
-                                    <span className={cx('text')}>Không có hoạt động nào</span>
-                                </div>
-                            )}
+                    <Box title="Hoạt động" className={cx('box', 'box2')}>
+                        <div className={cx('list1')}>
+                            {activitys.map((activity, index) => {
+                                return (
+                                    <div className={cx('item2')} key={activity?._id}>
+                                        <Image
+                                            className={cx('img')}
+                                            src={activity?.sender?.avatar}
+                                            fallback={images.fallbackAvatar}
+                                            alt={activity?.sender?.username}
+                                        />
+
+                                        <p className={cx('text')}>
+                                            {
+                                                <strong
+                                                    className={cx('strong-text')}
+                                                    onClick={() => handleClickUser(activity?.sender?._id)}
+                                                >
+                                                    {activity?.sender?.username}
+                                                </strong>
+                                            }{' '}
+                                            đã {getTypeNotifiication(activity?.type)}{' '}
+                                            <strong
+                                                className={cx('strong-text')}
+                                                onClick={() => handleClickBlog(activity?.target?._id)}
+                                            >
+                                                {activity?.target?.title}
+                                            </strong>
+                                        </p>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </Box>
                 </div>
-
                 <div className={cx('right-side')}>
                     <Box title="Bài viết của bạn" className={cx('box')}>
-                        <div className={cx('box-body')}>
-                            {blogs?.length > 0 ? (
-                                blogs?.map((blog, index) => {
-                                    return (
-                                        <div
-                                            className={cx('item2')}
-                                            key={index}
-                                            onClick={() => navigate(`/blog/${blog._id}`, { replace: true })}
-                                        >
-                                            {blog?.thumbnail && <Image className={cx('img')} src={blog.thumbnail} />}
-
-                                            <div className={cx('content')}>
-                                                <h5 className={cx('title')}>{blog.title}</h5>
-                                                <p className={cx('description')}>{blog.content}</p>
-                                            </div>
+                        <div className={cx('list2')}>
+                            {blogs.map((post) => {
+                                return (
+                                    <div className={cx('post')} key={post?._id}>
+                                        {post?.thumbnail && (
+                                            <Image
+                                                className={cx('post-img')}
+                                                src={post?.thumbnail}
+                                                onClick={() => handleClickBlog(post?._id)}
+                                            />
+                                        )}
+                                        <div className={cx('post-info')} onClick={() => handleClickBlog(post?._id)}>
+                                            <h4 className={cx('post-title')}>{post?.title}</h4>
+                                            <p className={cx('post-content')}>{post?.content}</p>
                                         </div>
-                                    );
-                                })
-                            ) : (
-                                <div className={cx('no-data')}>
-                                    <span className={cx('text')}>Không có bài viết nào</span>
-                                    <Button className={cx('link')} text onClick={() => navigate('/blog/write')}>
-                                        Viết bài mới
-                                    </Button>
-                                </div>
-                            )}
+                                    </div>
+                                );
+                            })}
                         </div>
                     </Box>
                 </div>

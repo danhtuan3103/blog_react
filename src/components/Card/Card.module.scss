@@ -115,16 +115,15 @@
 .body {
     display: flex;
     padding: 8px;
-    overflow: hidden;
+    width: 100%;
     text-overflow: ellipsis;
 }
 
 .info {
     flex: 1;
-    margin-right: 24px;
-}
+    overflow: hidden;
 
-.blog-info {
+    margin-right: 24px;
 }
 
 .title {
@@ -135,6 +134,7 @@
     margin-bottom: 0;
     text-overflow: ellipsis;
     word-wrap: break-word;
+    overflow-wrap: break-word;
     cursor: pointer;
 }
 
@@ -143,7 +143,7 @@
     font-size: 1.5rem;
     line-height: 1.6;
     margin-top: 4px;
-    width: 90%;
+    width: 100%;
     display: -webkit-box;
     overflow: hidden;
     white-space: normal;

@@ -10,6 +10,7 @@ import { MdClose } from 'react-icons/md';
 import 'tippy.js/dist/tippy.css';
 import * as request from '~/utils/httpRequest';
 import SearchItem from './SearchItem';
+
 const cx = classNames.bind(styles);
 
 function Search({ value, setValue }) {
@@ -73,6 +74,7 @@ function Search({ value, setValue }) {
     return (
         <div className={cx('wrapper')} onClick={handleClickInput}>
             <FiSearch className={cx('icon', 'search-icon')} />
+
             <input
                 ref={inputRef}
                 className={cx('search-input')}
@@ -91,13 +93,11 @@ function Search({ value, setValue }) {
                     <h4 className={cx('title')}>Grammar</h4>
                     {loading && <AiOutlineLoading3Quarters className={cx('loading')} />}
                     <div className={cx('results')}>
-                        {results.length > 0 ? (
+                        {results.length > 0 &&
                             results.map((item, index) => {
                                 return <SearchItem item={item} key={index} />;
-                            })
-                        ) : (
-                            <p className={cx('no-data')}>Không có kết quả</p>
-                        )}
+                            })}
+                        {!loading && results.length === 0 ? <p className={cx('no-data')}>Không có kết quả</p> : <></>}
                     </div>
                     {results.length > 0 && (
                         <p className={cx('seeall')} onClick={handleSeeAll}>

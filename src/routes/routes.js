@@ -1,20 +1,21 @@
-import SearchPage from '~/page/Search';
+import React from 'react';
 import config from '~/config';
-import Home from '~/page/Home';
-import Create from '~/page/Create';
-
-import Write from '~/page/Write';
-import Blog from '~/page/Blog';
-import Login from '~/page/Login';
-import Register from '~/page/Register';
 import { OtherLayout } from '~/layouts';
-import Profile from '~/page/Profile';
-import Store from '~/page/Store';
-import SearchDetail from '~/page/SearchDetail';
-import Avatar from '~/page/Avatar';
-import Feedback from '~/page/Feedback';
-import FeedbackList from '~/page/FeedbackList';
-import Error from '~/page/Error';
+import Write from '~/page/Write/Write';
+import Avatar from '~/page/Avatar/Avatar';
+
+const SearchPage = React.lazy(() => import('~/page/Search'));
+const Home = React.lazy(() => import('~/page/Home'));
+const Create = React.lazy(() => import('~/page/Create'));
+const Blog = React.lazy(() => import('~/page/Blog'));
+const Login = React.lazy(() => import('~/page/Login'));
+const Register = React.lazy(() => import('~/page/Register'));
+const Profile = React.lazy(() => import('~/page/Profile'));
+const Store = React.lazy(() => import('~/page/Store'));
+const SearchDetail = React.lazy(() => import('~/page/SearchDetail'));
+const Feedback = React.lazy(() => import('~/page/Feedback'));
+const FeedbackList = React.lazy(() => import('~/page/FeedbackList'));
+const Error = React.lazy(() => import('~/page/Error'));
 
 const publicRoutes = [
     { path: config.routes.home, component: Home, layout: OtherLayout },
