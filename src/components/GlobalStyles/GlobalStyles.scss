@@ -92,6 +92,12 @@ body {
         font-size: 2rem;
         color: var(--two-night-color);
     }
+
+    .rc-md-editor.full {
+        .rc-md-navigation {
+            background: var(--background-color);
+        }
+    }
 }
 button,
 input,

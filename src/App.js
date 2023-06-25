@@ -31,6 +31,12 @@ function App() {
         handleAuth({ isAuthenticated, authHandle: fetchAPI });
     }, [isAuthenticated]);
 
+    useEffect(() => {
+        if (window.location.hash === '#_=_') {
+            window.location.hash = '';
+        }
+    }, []);
+
     return (
         <Router>
             <div className="App" data-theme={theme}>

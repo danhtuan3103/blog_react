@@ -25,6 +25,7 @@ function Login() {
 
     const dispatch = useDispatch();
 
+    // GOOGLE SIGNIN
     useEffect(() => {
         // Khởi tạo Google Sign-In
         window.google.accounts.id.initialize({
@@ -60,31 +61,11 @@ function Login() {
         window.google.accounts.id.prompt();
     };
 
-    // FABEBOOK
+    const handleClickFacebook = async () => {
+        window.open('http://localhost:4000/auth/facebook', '_self');
+    };
 
-    // const responseFacebook = (response) => {
-    //     const { email } = response;
-
-    //     const fetchAPI = async () => {
-    //         const result = await authService.fbSignin({ data: { email } });
-
-    //         dispatch(
-    //             login({
-    //                 accessToken: result.accessToken,
-    //                 refreshToken: result.refreshToken,
-    //                 data: result.user,
-    //             }),
-    //         );
-    //         path ? (window.location.href = path) : (window.location.href = '/');
-    //     };
-
-    //     if (!email) {
-    //         alert('Not Found');
-    //     } else {
-    //         fetchAPI();
-    //     }
-    // };
-
+    // VALIDATION
     const validator = (state) => {
         let error = {};
 
@@ -154,19 +135,10 @@ function Login() {
                         <Button outline className={cx('btn')} onClick={handleCustomButtonClick}>
                             Continute with Google
                         </Button>
-                        {/* <FacebookLogin
-                            appId={process.env.REACT_APP_FACEBOOK_APP_ID}
-                            autoLoad={false}
-                            fields="name,email,picture"
-                            scope="public_profile"
-                            // onClick={componentClicked}
-                            callback={responseFacebook}
-                            render={(renderProps) => (
-                                <Button outline className={cx('btn')} onClick={renderProps.onClick}>
-                                    Continute with Facebook
-                                </Button>
-                            )}
-                        /> */}
+
+                        <Button outline className={cx('btn')} onClick={handleClickFacebook}>
+                            Continute with Facebook
+                        </Button>
                     </div>
 
                     <div className={cx('line')}>
