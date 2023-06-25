@@ -62,7 +62,7 @@ function Login() {
     };
 
     const handleClickFacebook = async () => {
-        window.open('http://localhost:4000/auth/facebook', '_self');
+        window.open(`${process.env.REACT_APP_API_URL}/auth/facebook`, '_self');
     };
 
     // VALIDATION
